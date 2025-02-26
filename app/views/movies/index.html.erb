@@ -1,0 +1,55 @@
+<!-- app/views/movies/index.html.erb -->
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8 text-gray-800">Popular Movies</h1>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <% @popular_movies.each do |movie| %>
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:shadow-xl hover:scale-105">
+        <%= link_to movie_path(movie.id), class: "block h-full" do %>
+          <div class="relative pb-2/3">
+            <% if movie.poster_path %>
+              <img
+                src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+                alt="<%= movie.title %>"
+                class="w-full h-full object-cover rounded-t-xl"
+                loading="lazy"
+              >
+            <% else %>
+              <div class="bg-gray-200 h-64 flex items-center justify-center rounded-t-xl">
+                <span class="text-gray-500">No poster available</span>
+              </div>
+            <% end %>
+
+            <div class="absolute top-2 right-2 bg-yellow-400 text-gray-800 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow-md">
+              <%= movie.vote_average&.round(1) || 'N/A' %>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <h2 class="font-bold text-gray-800 truncate mb-1" title="<%= movie.title %>">
+              <%= movie.title %>
+            </h2>
+            <div class="flex justify-between items-center">
+              <p class="text-sm text-gray-600"><%= movie.release_date&.split('-')&.first || 'Unknown' %></p>
+              <div class="flex items-center text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <%= movie.runtime ? "#{movie.runtime} min" : "N/A" %>
+              </div>
+            </div>
+            <% if movie.genres.present? %>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <% movie.genres.take(2).each do |genre| %>
+                  <span class="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">
+                    <%= genre %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

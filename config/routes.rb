@@ -7,4 +7,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # config/routes.rb
+  root 'movies#index'
+
+  resources :movies, only: [:index, :show]
+  resources :actors, only: [:show]
 end

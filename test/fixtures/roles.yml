@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  movie: one
+  actor: one
+  character: MyString
+  age_during_filming: 1
+
+two:
+  movie: two
+  actor: two
+  character: MyString
+  age_during_filming: 1
