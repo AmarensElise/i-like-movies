@@ -13,4 +13,9 @@ Rails.application.routes.draw do
 
   resources :movies, only: [:index, :show]
   resources :actors, only: [:show]
+
+  # Search routes
+  get 'search', to: 'search#index'
+  get 'search/:id', to: 'search#show', as: 'search_show'
+
 end

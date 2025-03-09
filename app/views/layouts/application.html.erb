@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Movies</title>
+    <title>MovieDB</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-50 min-h-screen">
+    <%= render 'layouts/navbar' %>
+
+    <% if flash[:notice] %>
+      <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mx-4 my-2" role="alert">
+        <p><%= flash[:notice] %></p>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-4 my-2" role="alert">
+        <p><%= flash[:alert] %></p>
+      </div>
+    <% end %>
+
+    <main>
       <%= yield %>
     </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <p>&copy; <%= Date.today.year %> MovieDB - Powered by TMDB</p>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-300 hover:text-white">About</a>
+            <a href="#" class="text-gray-300 hover:text-white">Contact</a>
+            <a href="#" class="text-gray-300 hover:text-white">Privacy</a>
+            <a href="#" class="text-gray-300 hover:text-white">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
