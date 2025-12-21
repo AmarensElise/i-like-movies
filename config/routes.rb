@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   root 'movies#index'
 
   resources :movies, only: [:index, :show]
-  resources :actors, only: [:show]
+  resources :actors, only: [:show, :index]
   resources :favorite_actors, only: [:create, :destroy]
 
   # Search routes
