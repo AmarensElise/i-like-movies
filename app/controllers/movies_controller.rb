@@ -72,6 +72,10 @@ def show
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
 end
 
+def watchlist
+  @movies = Movie.joins(:watchlist_items).order(runtime: :asc)
+end
+
   private
 
   def fetch_and_save_cast(movie)
