@@ -1,23 +1,49 @@
+<h1 class="text-3xl font-bold mb-8 text-gray-800 text-center">Watchlist</h1>
+
 <div class="max-w-3xl mx-auto px-6 mt-12">
 <table class="w-full border-collapse text-left">
   <thead>
-    <tr class="border-b border-gray-300 text-sm text-gray-600">
+    <tr class="text-sm text-gray-600">
       <th class="py-2 pr-6 font-medium">Title</th>
       <th class="py-2 pr-6 font-medium text-right w-24">Year</th>
       <th class="py-2 pr-6 font-medium text-right w-28">Runtime</th>
+      <th class="py-2 pr-6 font-medium">Available on</th>
     </tr>
   </thead>
   <tbody>
     <% @movies.each do |movie| %>
-      <tr class="border-b border-gray-200">
+      <tr class="">
         <td class="py-3 pr-4">
           <%= link_to movie.title, movie_path(movie), class: "text-black font-semibold hover:underline" %>
         </td>
+       
         <td class="py-3 pr-4 text-gray-700 text-right">
           <%= movie.release_date&.year %>
         </td>
         <td class="py-3 pr-4 text-gray-700 text-right">
           <%= movie.runtime.present? ? "#{movie.runtime} min" : "—" %>
+        </td>
+         <td class="py-3 pr-6">
+          <% watch_providers = WatchAvailabilityService.new(movie).call %>
+
+          <% major_platforms = {
+            "Netflix" => "netflix.png",
+            "Disney Plus" => "disney.png",
+            "Amazon Prime Video" => "prime.png"
+          } %>
+
+          <div class="flex gap-3">
+            <% major_platforms.each do |platform, image| %>
+              <% available = watch_providers.any? { |_region, providers| providers.include?(platform) } %>
+
+              <% if available %>
+                <%= image_tag image,
+                  alt: platform,
+                  class: "h-5 w-auto opacity-80",
+                  title: platform %>
+              <% end %>
+            <% end %>
+          </div>
         </td>
       </tr>
     <% end %>
