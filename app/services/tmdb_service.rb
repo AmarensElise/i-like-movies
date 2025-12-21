@@ -2,9 +2,9 @@ class TmdbService
   include HTTParty
   base_uri 'https://api.themoviedb.org/3'
 
-  def self.api_key
-    Rails.application.credentials.tmdb[:api_key]
-  end
+def self.api_key
+  ENV.fetch("TMDB_API_KEY")
+end
 
   # Search for movies by query string
   def self.search_movies(query, page = 1)
