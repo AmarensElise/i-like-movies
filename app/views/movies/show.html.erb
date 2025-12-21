@@ -9,8 +9,13 @@
     <% end %>
   </div>
 
+  <div class="flex justify-end mb-4">
+    <%= render "movie_actions", movie: @movie %>
+  </div>
+
   <!-- Movie Details -->
   <div class="bg-white rounded-lg overflow-hidden mb-8">
+
     <div class="md:flex">
       <!-- Movie Poster -->
       <div class="md:w-1/3 lg:w-1/4">
