@@ -1,25 +1,26 @@
 <!-- Navbar -->
-<nav class="bg-indigo-600 shadow-md">
+<nav class="shadow-md">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo and Brand Name -->
       <div class="flex items-center">
         <div class="flex-shrink-0">
           <%= link_to root_path, class: "flex items-center" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-8h1V5h-1v2zm-2 8h1v-2h-1v2zm-2 0h1v-2h-1v2zm-2 0h1v-2H9v2zm-2 0h1v-2H7v2zm-2 0h1v-2H5v2zm0-2h1v-1H5v1zm8-6h1v1h-1V5zm-2 0h1v1h-1V5zm-2 0h1v1H9V5zm-2 0h1v1H7V5zm-2 0h1v1H5V5z" clip-rule="evenodd" />
-            </svg>
-            <span class="ml-2 text-xl font-bold text-white">MovieDB</span>
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0 1 18 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0 1 18 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 0 1 6 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5" />
+</svg>
+
+            <span class="ml-2 text-xl font-bold text-gray-900">MovieDB</span>
           <% end %>
         </div>
 
         <!-- Navigation Links -->
         <div class="hidden md:block ml-10">
           <div class="flex items-baseline space-x-4">
-            <%= link_to "Home", root_path, class: "text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Search", search_path, class: "text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Categories", "#", class: "text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Actors", "#", class: "text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Home", root_path, class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Search", search_path, class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Categories", "#", class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
+            <%= link_to "Actors", "#", class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
           </div>
         </div>
       </div>
@@ -31,7 +32,7 @@
             <%= f.text_field :query,
                           placeholder: "Quick search...",
                           class: "flex-grow px-3 py-1 border-none focus:ring-2 focus:ring-indigo-300 focus:outline-none text-sm" %>
-            <button type="submit" class="bg-indigo-800 text-white px-3 py-1 text-sm font-medium hover:bg-indigo-700 transition-colors">
+            <button type="submit" class="bg-indigo-800 text-gray-900 px-3 py-1 text-sm font-medium hover:bg-indigo-700 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -42,7 +43,7 @@
 
       <!-- Mobile menu button -->
       <div class="md:hidden flex items-center">
-        <button type="button" class="mobile-menu-button bg-indigo-600 inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+        <button type="button" class="mobile-menu-button bg-indigo-600 inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -58,10 +59,10 @@
   <!-- Mobile menu, show/hide based on menu state -->
   <div class="hidden md:hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <%= link_to "Home", root_path, class: "text-white hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Search", search_path, class: "text-white hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Categories", "#", class: "text-white hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Actors", "#", class: "text-white hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Home", root_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Search", search_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Categories", "#", class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Actors", "#", class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
     </div>
     <!-- Mobile Search -->
     <div class="px-2 pb-3">
@@ -70,7 +71,7 @@
           <%= f.text_field :query,
                         placeholder: "Search movies...",
                         class: "flex-grow px-3 py-2 border-none focus:ring-2 focus:ring-indigo-300 focus:outline-none" %>
-          <button type="submit" class="bg-indigo-800 text-white px-4 py-2 font-medium hover:bg-indigo-700 transition-colors">
+          <button type="submit" class="bg-indigo-800 text-gray-900 px-4 py-2 font-medium hover:bg-indigo-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
