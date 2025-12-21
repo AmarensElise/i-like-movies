@@ -1,0 +1,15 @@
+<% @actors.each do |actor| %>
+    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+        <%= link_to actor_path(actor) do %>
+        <div class="flex flex-col items-center p-4">
+            <div class="w-32 h-40 mb-4">
+            <% if actor.profile_path.present? %>
+                <%= image_tag "https://image.tmdb.org/t/p/w300#{actor.profile_path}", alt: actor.name, class: "w-full h-full object-cover rounded-md" %>
+            <% else %>
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center rounded-md">     
+                <span class="text-gray-500 text-sm">No Image</span>
+
+
+                </div>            <% end %>
+            </div>
+<% end %>
