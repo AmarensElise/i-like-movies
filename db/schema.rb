@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_09_220614) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_21_155130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_09_220614) do
     t.date "birthday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "favorite_actors", force: :cascade do |t|
+    t.bigint "actor_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actor_id"], name: "index_favorite_actors_on_actor_id", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
@@ -45,6 +52,25 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_09_220614) do
     t.index ["movie_id"], name: "index_roles_on_movie_id"
   end
 
+  create_table "viewings", force: :cascade do |t|
+    t.bigint "movie_id", null: false
+    t.date "watched_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_viewings_on_movie_id"
+  end
+
+  create_table "watchlist_items", force: :cascade do |t|
+    t.bigint "movie_id", null: false
+    t.text "pitch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_watchlist_items_on_movie_id", unique: true
+  end
+
+  add_foreign_key "favorite_actors", "actors"
   add_foreign_key "roles", "actors"
   add_foreign_key "roles", "movies"
+  add_foreign_key "viewings", "movies"
+  add_foreign_key "watchlist_items", "movies"
 end
