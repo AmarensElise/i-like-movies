@@ -15,7 +15,14 @@ Rails.application.routes.draw do
   resources :actors, only: [:show]
 
   # Search routes
+  get 'watchlist', to: 'movies#watchlist'
+
   get 'search', to: 'search#index'
   get 'search/:id', to: 'search#show', as: 'search_show'
+
+  resources :movies, only: [:show, :index]
+
+  resources :watchlist_items, only: [:create, :destroy]
+  resources :viewings, only: [:create]
 
 end
