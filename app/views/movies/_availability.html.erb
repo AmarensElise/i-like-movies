@@ -1,0 +1,36 @@
+<% if @watch_providers.present? %>
+  <% major_platforms = {
+    "Netflix" => "netflix.png",
+    "Disney Plus" => "disney.png",
+    "Amazon Prime Video" => "prime.png"
+  } %>
+
+  <div class="mt-6 flex justify-end gap-6">
+
+
+    <% major_platforms.each do |platform, image| %>
+      <% countries = @watch_providers.select { |_region, providers| providers.include?(platform) }.keys %>
+
+      <% if countries.any? %>
+        <details class="group ml-auto">
+          <summary class="flex justify-end cursor-pointer list-none">
+            <img
+              src="<%= asset_path(image) %>"
+              alt="<%= platform %>"
+              class="h-8 w-auto transition-transform duration-150 ease-in-out group-hover:scale-105"
+            />
+          </summary>
+
+          <div class="mt-3 flex flex-wrap justify-end gap-2 text-sm text-gray-600">
+            <% countries.each do |code| %>
+              <span class="rounded bg-gray-100 px-2 py-1">
+                <%= image_tag("flags/#{code.downcase}.svg", alt: code, class: "inline-block h-4 w-auto") %>
+
+              </span>
+            <% end %>
+          </div>
+        </details>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

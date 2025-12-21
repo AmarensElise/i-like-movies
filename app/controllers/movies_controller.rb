@@ -21,6 +21,7 @@ class MoviesController < ApplicationController
 def show
   # First try to find by database ID
   @movie = Movie.find_by(id: params[:id])
+  @watch_providers = WatchAvailabilityService.new(@movie).call
   # If not found by id, try to find by TMDB ID
   if @movie.nil?
     @movie = Movie.find_by(tmdb_id: params[:id])
@@ -74,6 +75,21 @@ end
 
 def watchlist
   @movies = Movie.joins(:watchlist_items).order(runtime: :asc)
+end
+
+def pitch
+  movie_id = WatchlistItem.order(Arel.sql('RANDOM()')).limit(1).pluck(:movie_id).first
+
+  unless movie_id
+    flash[:alert] = "Your watchlist is empty"
+    redirect_to movies_path
+    return
+  end
+
+  @movie = Movie.find(movie_id)
+
+  @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
+  @cast = @movie.roles.includes(:actor).order(:id)
 end
 
   private

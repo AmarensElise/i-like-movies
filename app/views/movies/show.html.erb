@@ -1,7 +1,7 @@
 <div class="max-w-6xl mx-auto p-6">
   <!-- Back Link -->
   <div class="mb-6">
-    <%= link_to :back, class: "inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium" do %>
+    <%= link_to '/', class: "inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium" do %>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
       </svg>
@@ -35,7 +35,7 @@
         <div class="mb-6">
           <span class="text-gray-600">
             <% if @movie.release_date.present? %>
-              Released: <%= @movie.release_date.strftime('%B %d, %Y') %>
+              <%= @movie.release_date.strftime('%B %d, %Y') %>
             <% else %>
               Release Date Unknown
             <% end %>
@@ -54,7 +54,7 @@
           <h3 class="text-lg font-medium text-gray-800 mb-2">Details</h3>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <p class="text-gray-900 font-medium">Runtime:</p>
+              <p class="text-black font-medium">Runtime:</p>
               <p class="text-gray-800">
                 <% if runtime = @movie_details&.dig('runtime') %>
                   <%= "#{runtime / 60}h #{runtime % 60}m" %>
@@ -63,21 +63,27 @@
                 <% end %>
               </p>            </div>
             <div>
-              <p class="text-gray-600 font-medium">Budget:</p>
+              <p class="text-black font-medium">Budget:</p>
               <p class="text-gray-800"><%= number_to_currency(@movie_details&.dig('budget'), precision: 0) || "Unknown" %></p>
             </div>
             <div>
-              <p class="text-gray-600 font-medium">Revenue:</p>
+              <p class="text-black font-medium">Revenue:</p>
               <p class="text-gray-800"><%= number_to_currency(@movie_details&.dig('revenue'), precision: 0) || "Unknown" %></p>
             </div>
             <div>
-              <p class="text-gray-600 font-medium">Vote Average:</p>
-              <p class="text-gray-800"><%= "#{@movie_details&.dig('vote_average')}/10" || "Unknown" %></p>
+              <p class="text-black font-medium">Vote Average:</p>
+              <p class="text-gray-800"><%= "#{@movie_details&.dig('vote_average')&.round(1)}" || "Unknown" %></p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Watch Providers Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Watch Providers</h2>
+    <%= render "availability", watch_providers: @watch_providers %>
   </div>
 
   <!-- Cast Section -->

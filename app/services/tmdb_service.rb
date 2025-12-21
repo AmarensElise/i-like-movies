@@ -28,6 +28,8 @@ end
     response.success? ? response : nil
   end
 
+  
+
   # Fetch a movie's credits (cast and crew)
   def self.fetch_movie_credits(tmdb_id)
     response = get("/movie/#{tmdb_id}/credits", query: {
@@ -173,5 +175,14 @@ end
     })
 
     response.success? ? response['results'] : []
+  end
+
+    # Fetch watch providers (stream / rent / buy) for a movie
+  def self.fetch_watch_providers(tmdb_id)
+    response = get("/movie/#{tmdb_id}/watch/providers", query: {
+      api_key: api_key
+    })
+
+    response.success? ? response['results'] : {}
   end
 end

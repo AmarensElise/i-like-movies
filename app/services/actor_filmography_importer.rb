@@ -9,6 +9,10 @@ class ActorFilmographyImporter
     import_cast_roles(credits['cast'])
   end
 
+  def import!
+    call
+  end
+
   private
 
   def import_cast_roles(cast_movies)

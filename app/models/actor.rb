@@ -7,4 +7,8 @@ class Actor < ApplicationRecord
   # Validations
   validates :tmdb_id, presence: true, uniqueness: true
   validates :name, presence: true
+
+  def favorited?
+    favorite_actors.exists?
+  end
 end
