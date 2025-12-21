@@ -1,5 +1,5 @@
 # app/services/tmdb/actor_filmography_importer.rb
-class Tmdb::ActorFilmographyImporter
+class ActorFilmographyImporter
   def initialize(actor)
     @actor = actor
   end
