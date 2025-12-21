@@ -1,0 +1,27 @@
+<%# app/views/actors/_actor.html.erb %>
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105">
+  <% begin %>
+    <% person_details = TmdbService.fetch_person(role.actor.tmdb_id) %>
+    <% profile_path = person_details&.dig('profile_path') %>
+
+    <% if profile_path.present? %>
+      <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= role.actor.name %>" class="w-full h-48 object-cover" />
+    <% else %>
+      <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+        <span class="text-gray-500">No Image</span>
+      </div>
+    <% end %>
+  <% rescue %>
+    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+      <span class="text-gray-500">Image Error</span>
+    </div>
+  <% end %>
+
+  <div class="p-3">
+    <h4 class="font-medium text-gray-900 truncate"><%= role.actor.name %></h4>
+    <p class="text-sm text-gray-500 truncate"><%= role.character %></p>
+    <% if role.age_during_filming.present? %>
+      <p class="text-xs text-gray-400">Age: <%= role.age_during_filming %></p>
+    <% end %>
+  </div>
+</div>

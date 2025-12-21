@@ -1,4 +1,99 @@
-<div>
-  <h1 class="font-bold text-4xl">Actors#show</h1>
-  <p>Find me in app/views/actors/show.html.erb</p>
+<%# app/views/actors/show.html.erb %>
+<div class="max-w-6xl mx-auto p-6">
+  <!-- Back Link -->
+  <div class="mb-6">
+    <%= link_to :back, class: "inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+      </svg>
+      Back
+    <% end %>
+  </div>
+
+  <!-- Actor Details -->
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+    <div class="md:flex">
+      <!-- Actor Image -->
+      <div class="md:w-1/3 lg:w-1/4 p-6 flex justify-center items-start">
+        <% profile_path = @actor_details&.dig('profile_path') %>
+        <% if profile_path.present? %>
+          <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= @actor.name %>" class="w-48 h-48 rounded-full object-cover border-4 border-gray-200 shadow-lg" />
+        <% else %>
+          <div class="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 border-4 border-gray-200 shadow-lg">
+            <span class="text-gray-500">No Image</span>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Actor Info -->
+      <div class="p-6 md:w-2/3 lg:w-3/4">
+        <h1 class="text-4xl font-bold text-gray-900 mb-2"><%= @actor.name %></h1>
+
+        <div class="mb-3">
+            <% if @actor.birthday.present? %>
+              <% current_age = Date.today.year - @actor.birthday.year - ((Date.today.month > @actor.birthday.month || (Date.today.month == @actor.birthday.month && Date.today.day >= @actor.birthday.day)) ? 0 : 1) %>
+              <span class="text-gray-600 flex items-center flex-wrap">
+                <span>Born <%= @actor.birthday.strftime('%B %d, %Y') %> (Age: <%= current_age %>)</span>
+                <% if @actor_details&.dig('place_of_birth').present? %>
+                  <span class="mx-2">•</span>
+                  <span><%= @actor_details['place_of_birth'] %></span>
+                <% end %>
+              </span>
+            <% end %>
+          </div>
+
+        <!-- Additional actor info from TMDB -->
+        <div class="mb-6">
+          <h3 class="text-lg font-medium text-gray-800 mb-2">Biography</h3>
+          <p class="text-gray-700">
+            <%= @actor_details&.dig('biography') || "No biography available" %>
+          </p>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Filmography Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Filmography</h2>
+
+    <% if @roles.present? %>
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="divide-y">
+          <% @roles.each do |role| %>
+            <%= link_to movie_path(role.movie), class: "block hover:bg-gray-50" do %>
+              <div class="p-4 flex items-center">
+                <% if role.movie.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w92<%= role.movie.poster_path %>" alt="<%= role.movie.title %>" class="w-12 h-18 object-cover rounded mr-4" />
+                <% else %>
+                  <div class="w-12 h-18 bg-gray-200 flex items-center justify-center rounded mr-4">
+                    <span class="text-gray-500 text-xs">No Image</span>
+                  </div>
+                <% end %>
+
+                <div>
+                  <h4 class="font-medium text-gray-900"><%= role.movie.title %></h4>
+                  <div class="flex items-center text-sm">
+                    <span class="text-gray-500"><%= role.movie.release_date&.year || "Unknown" %></span>
+                    <span class="mx-2 text-gray-400">•</span>
+                    <span class="text-gray-500">as <%= role.character %></span>
+                    <% if role.age_during_filming.present? %>
+                      <span class="mx-2 text-gray-400">•</span>
+                      <span class="text-gray-500">Age: <%= role.age_during_filming %></span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="bg-gray-100 rounded-lg p-4 text-center">
+        <p class="text-gray-600">No filmography information available</p>
+      </div>
+    <% end %>
+  </div>
 </div>
