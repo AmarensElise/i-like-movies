@@ -7,7 +7,7 @@
 
       <% if profile_path.present? %>
         <div class="flex-shrink-0">
-          <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= role.actor.name %>" class="w-16 h-16 rounded-full object-cover border-2 border-gray-200" />
+          <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= role.actor.name %>" style="height: 90px; width: 90px;" class="rounded-full object-cover border-2 border-gray-200" />
         </div>
       <% else %>
         <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 border-2 border-gray-200">
@@ -21,21 +21,17 @@
     <% end %>
 
     <div class="flex-grow min-w-0">
-      <h4 class="text-lg font-medium text-gray-900 truncate"><%= role.actor.name %></h4>
+      <h4 class="text-xl font-medium text-gray-900 truncate"><%= role.actor.name %></h4>
       <p class="text-md text-gray-500 truncate"><%= role.character %></p>
       <% if role.age_during_filming.present? || role.actor.birthday.present? %>
-        <div class="flex items-center mt-1">
+        <div class="flex items-center space-x-2 mt-3">
           <% if role.age_during_filming.present? %>
-            <span class="text-sm text-gray-500">Age during filming: <%= role.age_during_filming %></span>
-          <% end %>
-
-          <% if role.age_during_filming.present? && role.actor.birthday.present? %>
-            <span class="text-sm text-gray-500 mx-2">•</span>
+            <span class="text-sm text-gray-900 bg-yellow-400 rounded-full font-semibold" style="padding: 4px; margin-right: 4px;"><%= role.age_during_filming %></span>
           <% end %>
 
           <% if role.actor.birthday.present? %>
             <% current_age = Date.today.year - role.actor.birthday.year - ((Date.today.month > role.actor.birthday.month || (Date.today.month == role.actor.birthday.month && Date.today.day >= role.actor.birthday.day)) ? 0 : 1) %>
-            <span class="text-sm text-gray-500">Current age: <%= current_age %></span>
+         <span class="text-sm text-gray-700 bg-gray-100 rounded-full" style="padding: 4px;"><%= current_age %></span>
           <% end %>
         </div>
       <% end %>
