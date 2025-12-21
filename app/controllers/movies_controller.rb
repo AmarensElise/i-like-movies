@@ -90,6 +90,9 @@ def pitch
 
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
+  @watch_providers = WatchAvailabilityService.new(@movie).call
+
+
 end
 
   private
