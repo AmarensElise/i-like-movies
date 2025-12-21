@@ -1,17 +1,17 @@
-<div class="max-w-4xl mx-auto px-6">
-<table class="w-full fixed border-collapse mx-auto text-left">
+<div class="max-w-3xl mx-auto px-6 mt-12">
+<table class="w-full border-collapse text-left">
   <thead>
     <tr class="border-b border-gray-300 text-sm text-gray-600">
-      <th class="py-2 pr-6 font-medium w-2/3">Title</th>
-      <th class="py-2 pr-6 font-medium w-1/6 -">Year</th>
-      <th class="py-2 pr-6 font-medium w-1/6 ">Runtime</th>
+      <th class="py-2 pr-6 font-medium">Title</th>
+      <th class="py-2 pr-6 font-medium text-right w-24">Year</th>
+      <th class="py-2 pr-6 font-medium text-right w-28">Runtime</th>
     </tr>
   </thead>
   <tbody>
     <% @movies.each do |movie| %>
       <tr class="border-b border-gray-200">
         <td class="py-3 pr-4">
-          <%= link_to movie.title, movie_path(movie), class: "text-black-600 font-semibold hover:underline" %>
+          <%= link_to movie.title, movie_path(movie), class: "text-black font-semibold hover:underline" %>
         </td>
         <td class="py-3 pr-4 text-gray-700 text-right">
           <%= movie.release_date&.year %>
