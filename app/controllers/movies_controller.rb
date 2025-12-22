@@ -54,6 +54,10 @@ def show
     end
   end
 
+  if @movie.roles.count <= 1
+    fetch_and_save_cast(@movie)
+  end
+
   # Update existing movies that might be missing these details
   if @movie.runtime.nil? || @movie.vote_average.nil?
     movie_data = TmdbService.fetch_movie(@movie.tmdb_id)
