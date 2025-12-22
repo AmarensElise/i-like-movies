@@ -21,8 +21,6 @@ class MoviesController < ApplicationController
 def show
   # First try to find by database ID
   @movie = Movie.find_by(id: params[:id])
-  @watch_providers = WatchAvailabilityService.new(@movie).call
-  # If not found by id, try to find by TMDB ID
   if @movie.nil?
     @movie = Movie.find_by(tmdb_id: params[:id])
   end
@@ -71,6 +69,7 @@ def show
   @cast = @movie.roles.includes(:actor).order(:id)
   # Get additional details from TMDB for the view
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
+  @watch_providers = WatchAvailabilityService.new(@movie).call  # If not found by id, try to find by TMDB ID
 end
 
 def watchlist
