@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   # Search routes
   get 'watchlist', to: 'movies#watchlist'
   get 'pitch', to: 'movies#pitch'
+  get 'actor_pitch', to: 'movies#actor_pitch'
 
   get 'search', to: 'search#index'
   get 'search/:id', to: 'search#show', as: 'search_show'
