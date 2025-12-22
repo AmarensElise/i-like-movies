@@ -21,8 +21,21 @@
       <p class="text-md text-gray-500 truncate"><%= role.character %></p>
       <% if role.age_during_filming.present? || role.actor.birthday.present? %>
         <div class="flex items-center space-x-2 mt-3">
-          <% if role.age_during_filming.present? %>
-            <span class="text-sm text-gray-900 bg-yellow-400 rounded-full font-semibold" style="padding: 4px; margin-right: 4px;"><%= role.age_during_filming %></span>
+          <% filming_age =
+               if role.age_during_filming.present?
+                 role.age_during_filming
+               elsif role.actor.birthday.present? && role.movie.release_date.present?
+                 role.movie.release_date.year - role.actor.birthday.year -
+                   ((role.movie.release_date.month > role.actor.birthday.month ||
+                    (role.movie.release_date.month == role.actor.birthday.month &&
+                     role.movie.release_date.day >= role.actor.birthday.day)) ? 0 : 1)
+               end %>
+
+          <% if filming_age.present? %>
+            <span class="text-sm text-gray-900 bg-yellow-400 rounded-full font-semibold"
+                  style="padding: 4px; margin-right: 4px;">
+              <%= filming_age %>
+            </span>
           <% end %>
 
           <% if role.actor.birthday.present? %>
