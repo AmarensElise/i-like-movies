@@ -1,6 +1,6 @@
 class ActorsController < ApplicationController
   def index
-    @actors = Actor.where(favorite: true).order(:name)
+    @actors = Actor.joins(:favorite_actors).distinct
   end
 
   def show

@@ -91,8 +91,38 @@ def pitch
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
   @watch_providers = WatchAvailabilityService.new(@movie).call
+end
 
+def actor_pitch
+  actor = Actor
+    .joins(:favorite_actors)
+    .order(Arel.sql('RANDOM()'))
+    .first
 
+  unless actor
+    flash[:alert] = "You have no favorite actors yet"
+    redirect_to actors_path
+    return
+  end
+
+  seen_movie_ids = Viewing.pluck(:movie_id)
+
+  role = actor.roles
+              .where.not(movie_id: seen_movie_ids)
+              .order(Arel.sql('RANDOM()'))
+              .first
+
+  unless role
+    flash[:alert] = "No unseen movies found for your favorite actors"
+    redirect_to actors_path
+    return
+  end
+
+  @movie = role.movie
+
+  @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
+  @cast = @movie.roles.includes(:actor).order(:id)
+  @watch_providers = WatchAvailabilityService.new(@movie).call
 end
 
   private

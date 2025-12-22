@@ -1,13 +1,12 @@
-<%# app/views/actors/_actor.html.erb %>
-<%= link_to actor_path(role.actor), class: "block" do %>
+<%= link_to actor_path(actor), class: "block" do %>
   <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition duration-150">
     <% begin %>
-      <% person_details = TmdbService.fetch_person(role.actor.tmdb_id) %>
+      <% person_details = TmdbService.fetch_person(actor.tmdb_id) %>
       <% profile_path = person_details&.dig('profile_path') %>
 
       <% if profile_path.present? %>
         <div class="flex-shrink-0">
-          <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= role.actor.name %>" style="height: 90px; width: 90px;" class="rounded-full object-cover border-2 border-gray-200" />
+          <img src="https://image.tmdb.org/t/p/w300<%= profile_path %>" alt="<%= actor.name %>" style="height: 90px; width: 90px;" class="rounded-full object-cover border-2 border-gray-200" />
         </div>
       <% else %>
        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-10 w-10">
@@ -22,19 +21,11 @@
     <% end %>
 
     <div class="flex-grow min-w-0">
-      <h4 class="text-xl font-medium text-gray-900 truncate"><%= role.actor.name %></h4>
-      <p class="text-md text-gray-500 truncate"><%= role.character %></p>
-      <% if role.age_during_filming.present? || role.actor.birthday.present? %>
-        <div class="flex items-center space-x-2 mt-3">
-          <% if role.age_during_filming.present? %>
-            <span class="text-sm text-gray-900 bg-yellow-400 rounded-full font-semibold" style="padding: 4px; margin-right: 4px;"><%= role.age_during_filming %></span>
-          <% end %>
-
-          <% if role.actor.birthday.present? %>
-            <% current_age = Date.today.year - role.actor.birthday.year - ((Date.today.month > role.actor.birthday.month || (Date.today.month == role.actor.birthday.month && Date.today.day >= role.actor.birthday.day)) ? 0 : 1) %>
-         <span class="text-sm text-gray-700 bg-gray-100 rounded-full" style="padding: 4px;"><%= current_age %></span>
-          <% end %>
-        </div>
+      <h4 class="text-xl font-medium text-gray-900 truncate"><%= actor.name %></h4>
+      <% if actor.birthday.present? %>
+        <p class="text-sm text-gray-500">
+          Born <%= actor.birthday.strftime("%Y") %>
+        </p>
       <% end %>
     </div>
   </div>

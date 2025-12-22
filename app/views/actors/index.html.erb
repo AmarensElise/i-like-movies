@@ -1,15 +1,16 @@
-<% @actors.each do |actor| %>
-    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
-        <%= link_to actor_path(actor) do %>
-        <div class="flex flex-col items-center p-4">
-            <div class="w-32 h-40 mb-4">
-            <% if actor.profile_path.present? %>
-                <%= image_tag "https://image.tmdb.org/t/p/w300#{actor.profile_path}", alt: actor.name, class: "w-full h-full object-cover rounded-md" %>
-            <% else %>
-                <div class="w-full h-full bg-gray-200 flex items-center justify-center rounded-md">     
-                <span class="text-gray-500 text-sm">No Image</span>
+<div class="max-w-5xl mx-auto px-6 mt-12">
+  <h1 class="text-4xl font-semibold mb-6 text-center">
+    Favorite actors
+  </h1>
 
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    <%= render partial: "actor", collection: @actors, as: :actor %>
+  </div>
 
-                </div>            <% end %>
-            </div>
-<% end %>
+  <div class="flex justify-center">
+    <%= link_to "Pitch me a movie",
+        "/actor_pitch",
+        class: "inline-flex items-center rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-gray-800 transition",
+        data: { turbo: false } %>
+  </div>
+</div>
