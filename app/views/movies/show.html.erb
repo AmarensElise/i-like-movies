@@ -93,7 +93,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <% @cast.each do |role| %>
           <div class="bg-white rounded-lg shadow">
-            <%= render 'actors/actor', actor: role.actor %>
+            <%= render "movies/actor", role: role %>
           </div>
         <% end %>
       </div>
