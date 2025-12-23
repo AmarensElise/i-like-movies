@@ -1,21 +1,5 @@
 <div class="max-w-4xl mx-auto p-6">
 
-        <% favorite_actor_ids = Actor.joins(:favorite_actors).pluck(:id) %>
-        <% starring_favorites = @cast.select { |role| favorite_actor_ids.include?(role.actor_id) } %>
-
-        <% if starring_favorites.any? %>
-          <div class="mb-6">
-            <h3 class="text-sm font-medium text-gray-600 mb-2">
-              Featuring<%= "s" if starring_favorites.size > 1 %>
-            </h3>
-
-            <div class="flex flex-wrap gap-3">
-              <% starring_favorites.each do |role| %>
-                <%= render partial: "actors/actor", collection: [role.actor], as: :actor %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
 
 
 
@@ -48,8 +32,9 @@
           </span>
         </div>
 
-        <h1 class="text-4xl font-bold text-gray-900 mb-6"><%= @movie.title %> </h1>
-
+ <h1 class="text-4xl font-bold text-gray-900 mb-6 transition">
+          <%= link_to @movie.title, movie_path(@movie), class: "hover:text-indigo-400" %>
+        </h1>
         
 
          <div>
@@ -98,6 +83,24 @@
       </div>
     </div>
   </div>
+
+
+        <% favorite_actor_ids = Actor.joins(:favorite_actors).pluck(:id) %>
+        <% starring_favorites = @cast.select { |role| favorite_actor_ids.include?(role.actor_id) } %>
+
+        <% if starring_favorites.any? %>
+          <div class="mb-6">
+            <h3 class="text-sm font-medium text-gray-600 mb-2">
+              Featuring<%= "s" if starring_favorites.size > 1 %>
+            </h3>
+
+            <div class="flex flex-wrap gap-3">
+              <% starring_favorites.each do |role| %>
+                <%= render partial: "actors/actor", collection: [role.actor], as: :actor %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
 
   <div class="mb-8 flex justify-center">
   <%= link_to "Pitch me another one",
