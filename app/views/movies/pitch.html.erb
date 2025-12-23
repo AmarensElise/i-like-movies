@@ -30,7 +30,9 @@
           </span>
         </div>
 
-        <h1 class="text-4xl font-bold text-gray-900 mb-6"><%= @movie.title %> </h1>
+        <h1 class="text-4xl font-bold text-gray-900 mb-6 transition">
+          <%= link_to @movie.title, movie_path(@movie), class: "hover:text-indigo-400" %>
+        </h1>
 
         
 
