@@ -1,18 +1,21 @@
 <div class="flex gap-3 items-center justify-end">
-  <%= button_to watchlist_items_path(movie_id: movie.id),
-    method: :post,
-    form_class: "inline",
-    data: { turbo: false },
-    class: "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition
-            #{movie.on_watchlist? ? 'bg-blue-100 text-blue-700 cursor-default' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}",
-    disabled: movie.on_watchlist?,
-    title: movie.on_watchlist? ? "On watchlist" : "Add to watchlist" do %>
+  <% unless movie.on_watchlist? %>
+    <button
+      type="button"
+      data-action="click->modal#open"
+      class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition bg-gray-100 hover:bg-gray-200 text-gray-700"
+      title="Add to watchlist">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+      </svg>
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-      <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-    </svg>
-
-    <span><%= movie.on_watchlist? ? "On watchlist" : "Watchlist" %></span>
+      <span>Watchlist</span>
+    </button>
+  <% else %>
+    <span class="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-2 text-sm font-medium text-blue-700 cursor-default">
+      On watchlist
+    </span>
   <% end %>
 
   <% if movie.seen? %>
@@ -41,3 +44,38 @@
     <% end %>
   <% end %>
 </div>
+
+<% unless movie.on_watchlist? %>
+  <div
+    id="watchlist-modal-<%= movie.id %>"
+    data-controller="modal"
+    data-action="click->modal#close"
+    class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center">
+    
+    <div class="bg-white rounded-xl w-full max-w-md p-6 shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">
+        Why do you want to watch this?
+      </h3>
+
+      <%= form_with url: watchlist_items_path, method: :post, data: { turbo: false } do |f| %>
+        <%= f.hidden_field :movie_id, value: movie.id %>
+
+        <%= f.text_area :pitch,
+              rows: 4,
+              placeholder: "e.g. Recommended by someone, sounds cozy, great cast…",
+              class: "w-full rounded-lg border-gray-300 focus:border-gray-500 focus:ring-gray-500 mb-4" %>
+
+        <div class="flex justify-end gap-3">
+          <button type="button"
+                  data-modal-close
+                  class="text-sm text-gray-600 hover:text-black">
+            Cancel
+          </button>
+
+          <%= f.submit "Add to watchlist",
+                class: "rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
