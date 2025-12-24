@@ -76,6 +76,64 @@ def show
   @watch_providers = WatchAvailabilityService.new(@movie).call  # If not found by id, try to find by TMDB ID
 end
 
+def cast
+  # First try to find by database ID
+  @movie = Movie.find_by(id: params[:id])
+  if @movie.nil?
+    @movie = Movie.find_by(tmdb_id: params[:id])
+  end
+  # If still not found, try to fetch from TMDB
+  if @movie.nil?
+    begin
+      movie_data = TmdbService.fetch_movie(params[:id])
+      if movie_data.present? && movie_data['id'].present?
+        # Create the movie record with additional details
+        @movie = Movie.create!(
+          tmdb_id: movie_data['id'],
+          title: movie_data['title'],
+          release_date: movie_data['release_date'],
+          poster_path: movie_data['poster_path'],
+          runtime: movie_data['runtime'],
+          vote_average: movie_data['vote_average']
+        )
+        # Fetch cast information
+        fetch_and_save_cast(@movie)
+        flash[:notice] = "Movie added to the database"
+      else
+        flash[:alert] = "Movie not found in TMDB"
+        redirect_to search_path
+        return
+      end
+    rescue => e
+      Rails.logger.error("Error fetching movie: #{e.message}")
+      flash[:alert] = "Error fetching movie details"
+      redirect_to search_path
+      return
+    end
+  end
+
+  if @movie.roles.count <= 1
+    fetch_and_save_cast(@movie)
+  end
+
+  # Update existing movies that might be missing these details
+  if @movie.runtime.nil? || @movie.vote_average.nil?
+    movie_data = TmdbService.fetch_movie(@movie.tmdb_id)
+    if movie_data.present?
+      @movie.update(
+        runtime: movie_data['runtime'],
+        vote_average: movie_data['vote_average']
+      )
+    end
+  end
+
+  # Load the cast (actors and their roles)
+  @cast = @movie.roles.includes(:actor).order(:id)
+  # Get additional details from TMDB for the view
+  @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
+  @watch_providers = WatchAvailabilityService.new(@movie).call  # If not found by id, try to find by TMDB ID
+end
+
 def watchlist
   @movies = Movie.joins(:watchlist_items).order(runtime: :asc)
 end
@@ -114,6 +172,22 @@ end
   rescue => e
     Rails.logger.error("Error in fetch_cast: #{e.message}")
     head :internal_server_error
+  end
+
+  # GET /movies/:id/cast
+  # Render a dedicated cast page for the movie. If the cast isn't present
+  # yet, enqueue the background job and render a page that will poll for the
+  # cast and display it once ready.
+  def cast
+    @movie = Movie.find(params[:id])
+
+    if @movie.roles.count <= 1
+       fetch_and_save_cast(@movie)
+    end
+
+    @watch_providers = WatchAvailabilityService.new(@movie).call
+    @cast = @movie.roles.includes(:actor).order(:id)
+    # Render app/views/movies/cast.html.erb
   end
 
 def actor_pitch

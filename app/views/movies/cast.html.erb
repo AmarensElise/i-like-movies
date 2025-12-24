@@ -1,0 +1,105 @@
+<div class="max-w-6xl mx-auto p-6">
+  <!-- Back Link -->
+  <div class="mb-6">
+    <%= link_to '/', class: "inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+      </svg>
+      Back
+    <% end %>
+  </div>
+
+  <div class="flex justify-end mb-4">
+    <%= render "movie_actions", movie: @movie %>
+  </div>
+
+  <!-- Movie Details -->
+  <div class="bg-white rounded-lg overflow-hidden mb-8">
+
+
+
+    <div class="md:flex">
+      <!-- Movie Poster -->
+      <div class="md:w-1/3 lg:w-1/4">
+        <% if @movie.poster_path.present? %>
+          <img src="https://image.tmdb.org/t/p/w500<%= @movie.poster_path %>" alt="<%= @movie.title %>" class="w-auto h-[300px] object-cover shadow-lg rounded-xl" />
+        <% else %>
+          <div class="w-full h-72 md:h-full bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-500">No Poster Available</span>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Movie Info -->
+      <div class="p-6 md:w-2/3 lg:w-3/4">
+
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-gray-600">
+              <% if @movie.release_date.present? %>
+                <%= @movie.release_date.strftime('%B %d, %Y') %>
+              <% else %>
+                Release Date Unknown
+              <% end %>
+            </span>
+          </div>
+
+          <div>
+            <p class="text-xl bg-yellow-400 rounded-full px-4 py-2 text-black font-semibold">
+              <% avg = @movie_details&.dig('vote_average') %>
+              <%= avg ? ((avg.to_f * 10).ceil / 10.0) : "Unknown" %>
+            </p>
+          </div>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 my-4"><%= @movie.title %> </h1>
+
+     
+
+
+          <div>
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+                 <div class="flex items-center text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <%= @movie.runtime ? "#{@movie.runtime} min" : "N/A" %>
+              </div>
+
+              
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+  <!-- Watch Providers Section -->
+  <div class="mb-8">
+    <%= render "availability", watch_providers: @watch_providers %>
+  </div>
+
+  <!-- Cast Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Cast</h2>
+
+    <% if @cast.present? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @cast.each do |role| %>
+          <div class="bg-white rounded-lg shadow">
+            <%= render "movies/actor", role: role %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bg-gray-100 rounded-lg p-4 text-center">
+        <p class="text-gray-600">No cast information available</p>
+      </div>
+    <% end %>
+  </div>
+</div>

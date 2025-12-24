@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :movies, only: [:index, :show] do
     member do
+      get :cast
       post :fetch_cast
     end
   end
