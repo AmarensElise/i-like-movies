@@ -39,8 +39,8 @@ def show
           vote_average: movie_data['vote_average']
         )
         # Fetch cast information
-        fetch_and_save_cast(@movie)
-        flash[:notice] = "Movie added to the database"
+        #fetch_and_save_cast(@movie)
+        #flash[:notice] = "Movie added to the database"
       else
         flash[:alert] = "Movie not found in TMDB"
         redirect_to search_path
@@ -55,7 +55,7 @@ def show
   end
 
   if @movie.roles.count <= 1
-    fetch_and_save_cast(@movie)
+   # fetch_and_save_cast(@movie)
   end
 
   # Update existing movies that might be missing these details
@@ -70,7 +70,7 @@ def show
   end
 
   # Load the cast (actors and their roles)
-  @cast = @movie.roles.includes(:actor).order(:id)
+  # @cast = @movie.roles.includes(:actor).order(:id)
   # Get additional details from TMDB for the view
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @watch_providers = WatchAvailabilityService.new(@movie).call  # If not found by id, try to find by TMDB ID
@@ -96,32 +96,51 @@ def pitch
   @watch_providers = WatchAvailabilityService.new(@movie).call
 end
 
-def actor_pitch
-  actor = Actor
-    .joins(:favorite_actors)
-    .order(Arel.sql('RANDOM()'))
-    .first
+  # POST /movies/:id/fetch_cast
+  # Called via AJAX to fetch cast from TMDB (and save to DB) and return
+  # the rendered cast partial HTML fragment.
+  def fetch_cast
+    @movie = Movie.find(params[:id])
 
-  unless actor
-    flash[:alert] = "You have no favorite actors yet"
-    redirect_to actors_path
-    return
+    # fetch_and_save_cast is a private method that handles TMDB lookup and
+    # creating Actor/Role records as needed.
+    fetch_and_save_cast(@movie)
+
+    @cast = @movie.roles.includes(:actor).order(:id)
+
+    render partial: 'movies/cast', locals: { cast: @cast }
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  rescue => e
+    Rails.logger.error("Error in fetch_cast: #{e.message}")
+    head :internal_server_error
   end
 
-  seen_movie_ids = Viewing.pluck(:movie_id)
+def actor_pitch
+  movie_ids = Movie
+    .with_favorite_actors
+    .unseen
+    .feature_length
+    .pluck(:id)
 
-  role = actor.roles
-              .where.not(movie_id: seen_movie_ids)
-              .order(Arel.sql('RANDOM()'))
-              .first
-
-  unless role
+  if movie_ids.empty?
     flash[:alert] = "No unseen movies found for your favorite actors"
     redirect_to actors_path
     return
   end
 
-  @movie = role.movie
+  @movie = Movie.find(movie_ids.sample)
+
+    # Update existing movies that might be missing these details
+  if @movie.runtime.nil? || @movie.vote_average.nil?
+    movie_data = TmdbService.fetch_movie(@movie.tmdb_id)
+    if movie_data.present?
+      @movie.update(
+        runtime: movie_data['runtime'],
+        vote_average: movie_data['vote_average']
+      )
+    end
+  end
 
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
