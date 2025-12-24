@@ -1,8 +1,10 @@
 class FavoriteActorsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     actor = Actor.find(params[:actor_id])
 
-    actor.favorite_actors.first_or_create!
+    current_user.favorite_actors.where(actor: actor).first_or_create!
 
     ActorFilmographyImporter.new(actor).import!
 
@@ -10,7 +12,7 @@ class FavoriteActorsController < ApplicationController
   end
 
   def destroy
-    favorite = FavoriteActor.find(params[:id])
+    favorite = current_user.favorite_actors.find(params[:id])
     actor = favorite.actor
 
     favorite.destroy

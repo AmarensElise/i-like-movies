@@ -1,0 +1,20 @@
+<div class="min-h-[calc(100vh-140px)] bg-gray-50 flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900"><%= title %></h1>
+      <% if defined?(subtitle) && subtitle.present? %>
+        <p class="mt-2 text-sm text-gray-600"><%= subtitle %></p>
+      <% end %>
+    </div>
+
+    <div class="mt-8">
+      <%= yield %>
+    </div>
+
+    <% if defined?(footer) && footer.present? %>
+      <div class="mt-6 text-center text-sm text-gray-600">
+        <%= footer %>
+      </div>
+    <% end %>
+  </div>
+</div>

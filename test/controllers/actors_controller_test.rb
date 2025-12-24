@@ -2,7 +2,8 @@ require "test_helper"
 
 class ActorsControllerTest < ActionDispatch::IntegrationTest
   test "should get show" do
-    get actors_show_url
+    actor = actors(:one)
+    get actor_url(actor)
     assert_response :success
   end
 end

@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  before_action :authenticate_user!, only: [:watchlist, :pitch, :actor_pitch]
+
   def index
     @movies = Movie.order(created_at: :desc).limit(20)
 
@@ -137,11 +139,11 @@ end
 def watchlist
   # Load watchlist items (with their movie) so we can show the pitch stored
   # on the watchlist_item and avoid N+1 queries when rendering the view.
-  @watchlist_items = WatchlistItem.joins(:movie).includes(:movie).order('movies.runtime ASC')
+  @watchlist_items = current_user.watchlist_items.joins(:movie).includes(:movie).order('movies.runtime ASC')
 end
 
 def pitch
-  movie_id = WatchlistItem.order(Arel.sql('RANDOM()')).limit(1).pluck(:movie_id).first
+  movie_id = current_user.watchlist_items.order(Arel.sql('RANDOM()')).limit(1).pluck(:movie_id).first
 
   unless movie_id
     flash[:alert] = "Your watchlist is empty"
@@ -154,7 +156,7 @@ def pitch
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
   @watch_providers = WatchAvailabilityService.new(@movie).call
-  @watchlist_item = WatchlistItem.find_by(movie: @movie)
+  @watchlist_item = current_user.watchlist_items.find_by(movie: @movie)
 end
 
   # POST /movies/:id/fetch_cast
@@ -195,7 +197,7 @@ end
 
 def actor_pitch
   movie_ids = Movie
-    .with_favorite_actors
+    .with_favorite_actors(current_user)
     .unseen
     .feature_length
     .pluck(:id)

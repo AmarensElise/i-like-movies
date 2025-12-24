@@ -42,9 +42,14 @@ STREAMING_REGIONS = ["MX", "AU", "GB", "SK", "US", "BR", "IS", "NO", "AR", "PT",
 
 
 
-  # Movies that feature at least one favorite actor
-  scope :with_favorite_actors, -> {
-    joins(roles: { actor: :favorite_actors }).distinct
+  # Movies that feature at least one favorite actor.
+  #
+  # If a user is provided, it filters to that user's favorite actors.
+  # Otherwise, it matches any favorite actor record.
+  scope :with_favorite_actors, ->(user = nil) {
+    scope = joins(roles: { actor: :favorite_actors })
+    scope = scope.where(favorite_actors: { user_id: user.id }) if user
+    scope.distinct
   }
 
   # Fast random movie selection compatible with DISTINCT and joins

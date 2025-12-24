@@ -1,10 +1,12 @@
 class ViewingsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     movie = Movie.find(params[:movie_id])
-    movie.viewings.find_or_create_by!(watched_on: Date.today)
+    current_user.viewings.find_or_create_by!(movie: movie, watched_on: Date.today)
 
     # optional: auto-remove from watchlist
-    movie.watchlist_items.destroy_all
+    current_user.watchlist_items.where(movie: movie).destroy_all
 
     redirect_back fallback_location: movie
   end
