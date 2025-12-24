@@ -2,6 +2,7 @@ class Movie < ApplicationRecord
   # Associations
   has_many :roles
   has_many :actors, through: :roles
+  has_many :favorite_actors, through: :actors
   has_many :watchlist_items, dependent: :destroy
   has_many :viewings, dependent: :destroy
 
@@ -36,6 +37,24 @@ STREAMING_REGIONS = ["MX", "AU", "GB", "SK", "US", "BR", "IS", "NO", "AR", "PT",
   scope :seen, -> { joins(:viewings).distinct }
   scope :unseen, -> { left_joins(:viewings).where(viewings: { id: nil }) }
 
+  # Movies with a runtime of 60 minutes or more
+  scope :feature_length, -> { where("runtime >= ?", 60) }
+
+
+
+  # Movies that feature at least one favorite actor
+  scope :with_favorite_actors, -> {
+    joins(roles: { actor: :favorite_actors }).distinct
+  }
+
+  # Fast random movie selection compatible with DISTINCT and joins
+  scope :random_one, -> {
+    from(
+      select(:id).order(Arel.sql("RANDOM()")).limit(1),
+      :movies
+    )
+  }
+
   # Scope for movies that are available on at least one streaming platform.
   #
   # This scope evaluates availability via WatchAvailabilityService, which
@@ -45,7 +64,7 @@ STREAMING_REGIONS = ["MX", "AU", "GB", "SK", "US", "BR", "IS", "NO", "AR", "PT",
   # Usage:
   #   Movie.available
   #
-scope :available, lambda {
+scope :available_via_api, lambda {
   available_ids = []
 
   find_each do |movie|
