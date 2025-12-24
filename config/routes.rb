@@ -11,7 +11,11 @@ Rails.application.routes.draw do
   # config/routes.rb
   root 'movies#index'
 
-  resources :movies, only: [:index, :show]
+  resources :movies, only: [:index, :show] do
+    member do
+      post :fetch_cast
+    end
+  end
   resources :actors, only: [:show, :index]
   resources :favorite_actors, only: [:create, :destroy]
 
@@ -23,7 +27,7 @@ Rails.application.routes.draw do
   get 'search', to: 'search#index'
   get 'search/:id', to: 'search#show', as: 'search_show'
 
-  resources :movies, only: [:show, :index]
+  # resources :movies already defined above with a member route
 
   resources :watchlist_items, only: [:create, :destroy]
   resources :viewings, only: [:create]
