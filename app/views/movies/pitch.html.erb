@@ -1,5 +1,13 @@
 <div class="max-w-4xl mx-auto p-6">
 
+  <% if @watchlist_item&.pitch.present? %>
+    <div class="flex justify-center mb-6">
+      <span class="bg-indigo-100 text-indigo-800 italic rounded-full px-6 py-3 inline-block text-center text-lg">
+        <%= truncate(strip_tags(@watchlist_item.pitch), length: 120) %>
+      </span>
+    </div>
+  <% end %>
+
 
   <!-- Movie Details -->
   <div class="bg-white rounded-lg overflow-hidden mb-8">

@@ -135,7 +135,9 @@ def cast
 end
 
 def watchlist
-  @movies = Movie.joins(:watchlist_items).order(runtime: :asc)
+  # Load watchlist items (with their movie) so we can show the pitch stored
+  # on the watchlist_item and avoid N+1 queries when rendering the view.
+  @watchlist_items = WatchlistItem.joins(:movie).includes(:movie).order('movies.runtime ASC')
 end
 
 def pitch
@@ -152,6 +154,7 @@ def pitch
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
   @watch_providers = WatchAvailabilityService.new(@movie).call
+  @watchlist_item = WatchlistItem.find_by(movie: @movie)
 end
 
   # POST /movies/:id/fetch_cast
