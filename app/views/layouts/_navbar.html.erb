@@ -28,7 +28,7 @@
         <%= form_with url: search_path, method: :get, class: "flex w-full" do |f| %>
           <div class="flex w-full rounded-md overflow-hidden">
             <%= f.text_field :query,
-                          placeholder: "Search movies...",
+                          placeholder: "Search movies & shows...",
                           class: "flex-grow px-3 py-3 rounded-full border-none focus:outline-none text-sm bg-gray-100" %>
             <button type="submit" class="bg-indigo-800 text-white px-3 py-1 text-sm rounded-full font-medium hover:bg-indigo-500 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,16 +75,28 @@
   <div class="hidden md:hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
       <%= link_to "Home", root_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Search", search_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Categories", "#", class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Actors", "#", class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Watchlist", watchlist_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Actors", actors_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <%= link_to "Pitch", pitch_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+
+      <% if user_signed_in? %>
+        <%= link_to "Dashboard", dashboard_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+        <%= button_to "Log out",
+              destroy_user_session_path,
+              method: :delete,
+              form_class: "block",
+              class: "w-full text-left text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <% else %>
+        <%= link_to "Log in", new_user_session_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
+      <% end %>
     </div>
     <!-- Mobile Search -->
     <div class="px-2 pb-3">
       <%= form_with url: search_path, method: :get, class: "flex w-full" do |f| %>
         <div class="flex w-full rounded-xl overflow-hidden">
           <%= f.text_field :query,
-                        placeholder: "Search movies...",
+                        placeholder: "Search movies & shows...",
                         class: "flex-grow px-3 py-2 border-none focus:ring-2 focus:ring-indigo-300 focus:outline-none" %>
           <button type="submit" class="bg-white text-gray-900 px-4 py-2 font-medium hover:bg-indigo-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
