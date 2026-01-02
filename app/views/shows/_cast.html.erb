@@ -1,0 +1,33 @@
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="divide-y">
+    <% start_year = show.start_year %>
+    <% end_year = show.end_year %>
+
+    <% cast.each do |role| %>
+      <% actor = role.actor %>
+      <% age_start = actor.birthday && start_year ? (start_year - actor.birthday.year) : nil %>
+      <% age_end = actor.birthday && end_year ? (end_year - actor.birthday.year) : nil %>
+
+      <%= link_to actor_path(actor), class: "block hover:bg-gray-50" do %>
+        <div class="p-4 flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-gray-900"><%= actor.name %></div>
+            <% if role.character.present? %>
+              <div class="text-sm text-gray-600"><%= role.character %></div>
+            <% end %>
+          </div>
+
+          <div class="text-sm text-gray-600">
+            <% if age_start && age_end %>
+              Age: <%= age_start %><%= age_end != age_start ? "–#{age_end}" : "" %>
+            <% elsif age_start %>
+              Age: <%= age_start %>
+            <% else %>
+              <span class="text-gray-400">Age unknown</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

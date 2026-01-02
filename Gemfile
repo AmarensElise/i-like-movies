@@ -33,6 +33,7 @@ gem 'tailwindcss-rails' # For Tailwind CSS
 gem 'httparty'  # For additional API requests if needed
 gem 'figaro'    # For managing environment variables
 gem 'devise'
+gem 'friendly_id', '~> 5.5'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

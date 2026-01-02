@@ -18,9 +18,31 @@ end
     response.success? ? response['results'] : []
   end
 
+  # Search for TV shows by query string
+  def self.search_tv(query, page = 1)
+    response = get('/search/tv', query: {
+      api_key: api_key,
+      query: query,
+      page: page,
+      include_adult: false
+    })
+
+    response.success? ? response['results'] : []
+  end
+
   # Fetch a specific movie's details
   def self.fetch_movie(tmdb_id)
     response = get("/movie/#{tmdb_id}", query: {
+      api_key: api_key,
+      append_to_response: 'credits'
+    })
+
+    response.success? ? response : nil
+  end
+
+  # Fetch a specific TV show's details
+  def self.fetch_tv(tmdb_id)
+    response = get("/tv/#{tmdb_id}", query: {
       api_key: api_key,
       append_to_response: 'credits'
     })
@@ -33,6 +55,15 @@ end
   # Fetch a movie's credits (cast and crew)
   def self.fetch_movie_credits(tmdb_id)
     response = get("/movie/#{tmdb_id}/credits", query: {
+      api_key: api_key
+    })
+
+    response.success? ? response : { 'cast' => [] }
+  end
+
+  # Fetch a TV show's credits
+  def self.fetch_tv_credits(tmdb_id)
+    response = get("/tv/#{tmdb_id}/credits", query: {
       api_key: api_key
     })
 
@@ -180,6 +211,15 @@ end
     # Fetch watch providers (stream / rent / buy) for a movie
   def self.fetch_watch_providers(tmdb_id)
     response = get("/movie/#{tmdb_id}/watch/providers", query: {
+      api_key: api_key
+    })
+
+    response.success? ? response['results'] : {}
+  end
+
+  # Fetch watch providers (stream / rent / buy) for a TV show
+  def self.fetch_tv_watch_providers(tmdb_id)
+    response = get("/tv/#{tmdb_id}/watch/providers", query: {
       api_key: api_key
     })
 

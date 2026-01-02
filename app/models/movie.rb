@@ -1,4 +1,7 @@
 class Movie < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: [:slugged, :history]
+
   # Associations
   has_many :roles
   has_many :actors, through: :roles

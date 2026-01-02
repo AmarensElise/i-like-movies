@@ -6,7 +6,7 @@ class ActorsController < ApplicationController
   end
 
   def show
-    @actor = Actor.find(params[:id])
+    @actor = Actor.friendly.find(params[:id])
     @roles = @actor.roles.includes(:movie).order('movies.release_date DESC')
 
     # Fetch additional details from TMDB API

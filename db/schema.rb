@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_02_125350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
     t.date "birthday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_actors_on_slug", unique: true
   end
 
   create_table "favorite_actors", force: :cascade do |t|
@@ -29,6 +31,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
     t.bigint "user_id", null: false
     t.index ["user_id", "actor_id"], name: "index_favorite_actors_on_user_id_and_actor_id", unique: true
     t.index ["user_id"], name: "index_favorite_actors_on_user_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -41,6 +54,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
     t.decimal "vote_average"
     t.integer "runtime"
     t.string "genres"
+    t.string "slug"
+    t.index ["slug"], name: "index_movies_on_slug", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
@@ -52,6 +67,32 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
     t.datetime "updated_at", null: false
     t.index ["actor_id"], name: "index_roles_on_actor_id"
     t.index ["movie_id"], name: "index_roles_on_movie_id"
+  end
+
+  create_table "show_roles", force: :cascade do |t|
+    t.bigint "show_id", null: false
+    t.bigint "actor_id", null: false
+    t.string "character"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actor_id"], name: "index_show_roles_on_actor_id"
+    t.index ["show_id", "actor_id"], name: "index_show_roles_on_show_id_and_actor_id", unique: true
+    t.index ["show_id"], name: "index_show_roles_on_show_id"
+  end
+
+  create_table "shows", force: :cascade do |t|
+    t.integer "tmdb_id"
+    t.string "name"
+    t.date "first_air_date"
+    t.date "last_air_date"
+    t.string "poster_path"
+    t.decimal "vote_average"
+    t.string "genres"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_shows_on_slug", unique: true
+    t.index ["tmdb_id"], name: "index_shows_on_tmdb_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -91,6 +132,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_24_180000) do
   add_foreign_key "favorite_actors", "users"
   add_foreign_key "roles", "actors"
   add_foreign_key "roles", "movies"
+  add_foreign_key "show_roles", "actors"
+  add_foreign_key "show_roles", "shows"
   add_foreign_key "viewings", "movies"
   add_foreign_key "viewings", "users"
   add_foreign_key "watchlist_items", "movies"

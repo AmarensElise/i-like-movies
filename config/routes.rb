@@ -23,6 +23,16 @@ Rails.application.routes.draw do
   resources :actors, only: [:show, :index]
   resources :favorite_actors, only: [:create, :destroy]
 
+  # TV Shows
+  # Canonical show URL: /show/:slug
+  get 'show/:id', to: 'shows#show', as: :show
+  resources :shows, only: [:index, :show], path: 'shows' do
+    member do
+      get :cast
+      post :fetch_cast
+    end
+  end
+
   # Search routes
   get 'watchlist', to: 'movies#watchlist'
   get 'pitch', to: 'movies#pitch'

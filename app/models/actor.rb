@@ -1,7 +1,12 @@
 class Actor < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: [:slugged, :history]
+
   # Associations
   has_many :roles
   has_many :movies, through: :roles
+  has_many :show_roles, dependent: :destroy
+  has_many :shows, through: :show_roles
   has_many :favorite_actors, dependent: :destroy
 
   # Validations

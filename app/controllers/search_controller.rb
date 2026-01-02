@@ -5,6 +5,7 @@ class SearchController < ApplicationController
     if @query.present?
       # Search local database first
       @movies = Movie.where("title ILIKE ?", "%#{@query}%").limit(10)
+      @shows  = Show.where("name ILIKE ?", "%#{@query}%").limit(10)
 
       # If not enough results, search TMDB API
       if @movies.count < 5
@@ -13,9 +14,18 @@ class SearchController < ApplicationController
       else
         @tmdb_movies = []
       end
+
+      if @shows.count < 5
+        tmdb_results = search_tmdb_shows(@query)
+        @tmdb_shows = process_tmdb_show_results(tmdb_results)
+      else
+        @tmdb_shows = []
+      end
     else
       @movies = Movie.order(created_at: :desc).limit(10)
       @tmdb_movies = []
+      @shows = Show.order(created_at: :desc).limit(10)
+      @tmdb_shows = []
     end
   end
 
@@ -50,6 +60,10 @@ class SearchController < ApplicationController
     TmdbService.search_movies(query)
   end
 
+  def search_tmdb_shows(query)
+    TmdbService.search_tv(query)
+  end
+
   def fetch_tmdb_movie(tmdb_id)
     TmdbService.fetch_movie(tmdb_id)
   end
@@ -61,6 +75,17 @@ class SearchController < ApplicationController
         tmdb_id: result['id'],
         title: result['title'],
         release_date: result['release_date'],
+        poster_path: result['poster_path']
+      }
+    end
+  end
+
+  def process_tmdb_show_results(results)
+    results.map do |result|
+      {
+        tmdb_id: result['id'],
+        name: result['name'],
+        first_air_date: result['first_air_date'],
         poster_path: result['poster_path']
       }
     end

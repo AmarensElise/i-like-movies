@@ -21,9 +21,10 @@ class MoviesController < ApplicationController
   end
 
 def show
-  # First try to find by database ID
-  @movie = Movie.find_by(id: params[:id])
-  if @movie.nil?
+  # First try friendly_id / DB lookup (slug or numeric id)
+  begin
+    @movie = Movie.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
     @movie = Movie.find_by(tmdb_id: params[:id])
   end
   # If still not found, try to fetch from TMDB
@@ -79,9 +80,10 @@ def show
 end
 
 def cast
-  # First try to find by database ID
-  @movie = Movie.find_by(id: params[:id])
-  if @movie.nil?
+  # First try friendly_id / DB lookup (slug or numeric id)
+  begin
+    @movie = Movie.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
     @movie = Movie.find_by(tmdb_id: params[:id])
   end
   # If still not found, try to fetch from TMDB
@@ -151,7 +153,7 @@ def pitch
     return
   end
 
-  @movie = Movie.find(movie_id)
+  @movie = Movie.friendly.find(movie_id)
 
   @movie_details = TmdbService.fetch_movie(@movie.tmdb_id)
   @cast = @movie.roles.includes(:actor).order(:id)
@@ -163,7 +165,7 @@ end
   # Called via AJAX to fetch cast from TMDB (and save to DB) and return
   # the rendered cast partial HTML fragment.
   def fetch_cast
-    @movie = Movie.find(params[:id])
+    @movie = Movie.friendly.find(params[:id])
 
     # fetch_and_save_cast is a private method that handles TMDB lookup and
     # creating Actor/Role records as needed.
@@ -179,22 +181,6 @@ end
     head :internal_server_error
   end
 
-  # GET /movies/:id/cast
-  # Render a dedicated cast page for the movie. If the cast isn't present
-  # yet, enqueue the background job and render a page that will poll for the
-  # cast and display it once ready.
-  def cast
-    @movie = Movie.find(params[:id])
-
-    if @movie.roles.count <= 1
-       fetch_and_save_cast(@movie)
-    end
-
-    @watch_providers = WatchAvailabilityService.new(@movie).call
-    @cast = @movie.roles.includes(:actor).order(:id)
-    # Render app/views/movies/cast.html.erb
-  end
-
 def actor_pitch
   movie_ids = Movie
     .with_favorite_actors(current_user)
@@ -208,7 +194,7 @@ def actor_pitch
     return
   end
 
-  @movie = Movie.find(movie_ids.sample)
+  @movie = Movie.friendly.find(movie_ids.sample)
 
     # Update existing movies that might be missing these details
   if @movie.runtime.nil? || @movie.vote_average.nil?
