@@ -90,8 +90,8 @@
   </div>
 
 
-        <% favorite_actor_ids = Actor.joins(:favorite_actors).pluck(:id) %>
-        <% starring_favorites = @cast.select { |role| favorite_actor_ids.include?(role.actor_id) } %>
+  <% favorite_actor_ids = current_user.favorite_actors.pluck(:actor_id) %>
+  <% starring_favorites = @cast.select { |role| favorite_actor_ids.include?(role.actor_id) } %>
 
         <% if starring_favorites.any? %>
           <div class="mb-6">
