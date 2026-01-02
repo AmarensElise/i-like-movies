@@ -1,6 +1,8 @@
 class ActorsController < ApplicationController
+  before_action :authenticate_user!, only: [:index]
+
   def index
-    @actors = Actor.joins(:favorite_actors).distinct
+    @actors = Actor.joins(:favorite_actors).where(favorite_actors: { user_id: current_user.id }).distinct
   end
 
   def show
