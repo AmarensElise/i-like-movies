@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :watchlist_items, dependent: :destroy
   has_many :viewings, dependent: :destroy
   has_many :favorite_actors, dependent: :destroy
+  has_many :lists, dependent: :destroy
 end

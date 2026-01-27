@@ -8,6 +8,8 @@ class Movie < ApplicationRecord
   has_many :favorite_actors, through: :actors
   has_many :watchlist_items, dependent: :destroy
   has_many :viewings, dependent: :destroy
+  has_many :list_items, dependent: :destroy
+  has_many :lists, through: :list_items
 
 
   # Validations

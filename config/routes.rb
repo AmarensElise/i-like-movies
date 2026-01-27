@@ -46,4 +46,8 @@ Rails.application.routes.draw do
   resources :watchlist_items, only: [:create, :destroy]
   resources :viewings, only: [:create]
 
+  # Custom Lists
+  resources :lists
+  resources :list_items, only: [:create, :destroy]
+
 end
