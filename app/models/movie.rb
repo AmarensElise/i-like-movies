@@ -10,6 +10,7 @@ class Movie < ApplicationRecord
   has_many :viewings, dependent: :destroy
   has_many :list_items, dependent: :destroy
   has_many :lists, through: :list_items
+  has_many :movie_likes, dependent: :destroy
 
 
   # Validations

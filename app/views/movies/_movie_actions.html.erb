@@ -1,5 +1,5 @@
 <div data-controller="toggle" class="w-full">
-  <div class="flex gap-3 items-center justify-end">
+  <div class="flex gap-3 items-center justify-end flex-wrap">
     <% unless movie.on_watchlist? %>
       <button
         type="button"
@@ -16,6 +16,11 @@
       <span class="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-2 text-sm font-medium text-blue-700 cursor-default">
         On watchlist
       </span>
+    <% end %>
+
+    <!-- Add to List Button -->
+    <% if user_signed_in? %>
+      <%= render "add_to_list_button", movie: movie %>
     <% end %>
 
     <% if movie.seen? %>

@@ -50,4 +50,8 @@ Rails.application.routes.draw do
   resources :lists
   resources :list_items, only: [:create, :destroy]
 
+  # Movie Likes (things people like about movies)
+  resources :movie_likes, only: [:create, :destroy]
+  resources :movie_like_votes, only: [:create, :destroy]
+
 end

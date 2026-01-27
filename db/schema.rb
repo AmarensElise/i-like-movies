@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_131623) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_27_141142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,27 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_131623) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "name"], name: "index_lists_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_lists_on_user_id"
+  end
+
+  create_table "movie_like_votes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "movie_like_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_like_id"], name: "index_movie_like_votes_on_movie_like_id"
+    t.index ["user_id", "movie_like_id"], name: "index_movie_like_votes_on_user_id_and_movie_like_id", unique: true
+    t.index ["user_id"], name: "index_movie_like_votes_on_user_id"
+  end
+
+  create_table "movie_likes", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "user_id", null: false
+    t.bigint "movie_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id", "created_at"], name: "index_movie_likes_on_movie_id_and_created_at"
+    t.index ["movie_id"], name: "index_movie_likes_on_movie_id"
+    t.index ["user_id"], name: "index_movie_likes_on_user_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -153,6 +174,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_131623) do
   add_foreign_key "list_items", "lists"
   add_foreign_key "list_items", "movies"
   add_foreign_key "lists", "users"
+  add_foreign_key "movie_like_votes", "movie_likes"
+  add_foreign_key "movie_like_votes", "users"
+  add_foreign_key "movie_likes", "movies"
+  add_foreign_key "movie_likes", "users"
   add_foreign_key "roles", "actors"
   add_foreign_key "roles", "movies"
   add_foreign_key "show_roles", "actors"
