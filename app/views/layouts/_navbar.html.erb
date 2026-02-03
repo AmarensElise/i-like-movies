@@ -1,135 +1,125 @@
-<!-- Navbar -->
-<nav style="padding-top: 40px; padding-bottom: 40px;" >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo and Brand Name -->
-      <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <%= link_to root_path, class: "inline-flex items-center" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-indigo-600">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0 1 18 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0 1 18 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 0 1 6 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5" />
-            </svg>
-            <span class="ml-2 text-xl font-bold text-gray-900 hover:text-gray-700 inline-block">MovieDB</span>
-          <% end %>
-        </div>
+<!-- Modern Bottom Navigation - Desktop Only -->
+<nav class="hidden md:block fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-t border-gray-200 shadow-lg">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center justify-between h-14">
+      <!-- Logo/Home -->
+      <%= link_to root_path, class: "flex items-center px-3 py-2 rounded-lg hover:bg-indigo-50 transition-colors group" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-indigo-600 group-hover:text-indigo-700">
+          <path d="M4.5 4.5a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h8.25a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3H4.5ZM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06Z" />
+        </svg>
+        <span class="ml-2 text-base font-semibold text-gray-900 group-hover:text-indigo-700">MovieDB</span>
+      <% end %>
 
-        <!-- Navigation Links -->
-        <div class="hidden md:block ml-10">
-          <div class="flex items-baseline space-x-4">
-            <%= link_to "Watchlist", "/watchlist", class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Lists", lists_path, class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Actors", "/actors", class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-            <%= link_to "Pitch", "/pitch", class: "text-gray-900 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium" %>
-          </div>
-        </div>
-      </div>
-
-      <!-- Search Bar in Navbar -->
-      <div class="hidden md:block flex-grow max-w-md mx-4">
-        <%= form_with url: search_path, method: :get, class: "flex w-full" do |f| %>
-          <div class="flex w-full rounded-md overflow-hidden">
-            <%= f.text_field :query,
-                          placeholder: "Search movies & shows...",
-                          class: "flex-grow px-3 py-3 rounded-full border-none focus:outline-none text-sm bg-gray-100" %>
-            <button type="submit" class="bg-indigo-800 text-white px-3 py-1 text-sm rounded-full font-medium hover:bg-indigo-500 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-          </div>
+      <!-- Navigation Links -->
+      <div class="flex items-center space-x-1">
+        <%= link_to watchlist_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Watchlist
+        <% end %>
+        
+        <%= link_to watched_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Watched
+        <% end %>
+        
+        <%= link_to liked_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Liked
+        <% end %>
+        
+        <%= link_to lists_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Lists
+        <% end %>
+        
+        <%= link_to actors_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Actors
+        <% end %>
+        
+        <%= link_to pitch_path, class: "px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-colors" do %>
+          Pitch
         <% end %>
       </div>
 
-      <!-- Profile icon (right of search) -->
-      <div class="hidden md:flex items-center">
+      <!-- Right Side: Dashboard & Clock -->
+      <div class="flex items-center space-x-3">
         <% if user_signed_in? %>
-          <%= link_to dashboard_path, class: "inline-flex items-center justify-center ml-3 text-gray-900 hover:text-indigo-700", title: "Dashboard" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
-          <% end %>
-        <% else %>
-          <%= link_to new_user_session_path, class: "inline-flex items-center justify-center ml-3 text-gray-900 hover:text-indigo-700", title: "Log in" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <%= link_to dashboard_path, class: "p-2 rounded-lg hover:bg-indigo-50 transition-colors group", title: "Dashboard" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-700 group-hover:text-indigo-600">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
             </svg>
           <% end %>
         <% end %>
-      </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center">
-        <button type="button" class="mobile-menu-button bg-indigo-600 inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile menu, show/hide based on menu state -->
-  <div class="hidden md:hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <%= link_to "Home", root_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Watchlist", watchlist_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Lists", lists_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Actors", actors_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <%= link_to "Pitch", pitch_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-
-      <% if user_signed_in? %>
-        <%= link_to "Dashboard", dashboard_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-        <%= button_to "Log out",
-              destroy_user_session_path,
-              method: :delete,
-              form_class: "block",
-              class: "w-full text-left text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <% else %>
-        <%= link_to "Log in", new_user_session_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-        <%= link_to "Sign up", new_user_registration_path, class: "text-gray-900 hover:bg-indigo-500 block px-3 py-2 rounded-md text-base font-medium" %>
-      <% end %>
-    </div>
-    <!-- Mobile Search -->
-    <div class="px-2 pb-3">
-      <%= form_with url: search_path, method: :get, class: "flex w-full" do |f| %>
-        <div class="flex w-full rounded-xl overflow-hidden">
-          <%= f.text_field :query,
-                        placeholder: "Search movies & shows...",
-                        class: "flex-grow px-3 py-2 border-none focus:ring-2 focus:ring-indigo-300 focus:outline-none" %>
-          <button type="submit" class="bg-white text-gray-900 px-4 py-2 font-medium hover:bg-indigo-700 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
+        
+        <!-- Clock -->
+        <div class="px-3 py-1.5 rounded-lg bg-gray-100 border border-gray-200">
+          <span id="taskbar-clock" class="text-sm font-medium text-gray-700">--:--</span>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- JavaScript for mobile menu toggle -->
+<!-- Clock Update Script -->
 <script>
+  function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const clockElement = document.getElementById('taskbar-clock');
+    if (clockElement) {
+      clockElement.textContent = `${hours}:${minutes}`;
+    }
+  }
+  
   document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    mobileMenuButton.addEventListener('click', function() {
-      const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-      mobileMenuButton.setAttribute('aria-expanded', !expanded);
-
-      if (expanded) {
-        mobileMenu.classList.add('hidden');
-        mobileMenuButton.querySelector('.block').classList.remove('hidden');
-        mobileMenuButton.querySelector('.hidden').classList.add('hidden');
-      } else {
-        mobileMenu.classList.remove('hidden');
-        mobileMenuButton.querySelector('.block').classList.add('hidden');
-        mobileMenuButton.querySelector('.hidden').classList.remove('hidden');
-      }
-    });
+    updateClock();
+    setInterval(updateClock, 1000);
   });
 </script>
+
+<!-- Mobile Bottom Navigation -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50">
+  <div class="bg-white border-t border-gray-200 shadow-lg">
+    <div class="flex items-center justify-around h-16 px-2">
+      <!-- Watchlist -->
+      <%= link_to watchlist_path, class: "flex flex-col items-center justify-center flex-1 text-gray-600 hover:text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+        </svg>
+        <span class="text-xs mt-1">Watchlist</span>
+      <% end %>
+
+      <!-- Dashboard -->
+      <%= link_to dashboard_path, class: "flex flex-col items-center justify-center flex-1 text-gray-600 hover:text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        </svg>
+        <span class="text-xs mt-1">Dashboard</span>
+      <% end %>
+
+      <!-- Search (Center, Larger) -->
+      <%= link_to root_path, class: "flex flex-col items-center justify-center -mt-6" do %>
+        <div class="bg-indigo-600 rounded-full p-4 shadow-lg hover:bg-indigo-700 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7 text-white">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <span class="text-xs mt-1 text-gray-600">Search</span>
+      <% end %>
+
+      <!-- Pitch -->
+      <%= link_to pitch_path, class: "flex flex-col items-center justify-center flex-1 text-gray-600 hover:text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+        </svg>
+        <span class="text-xs mt-1">Pitch</span>
+      <% end %>
+
+      <!-- Lists -->
+      <%= link_to lists_path, class: "flex flex-col items-center justify-center flex-1 text-gray-600 hover:text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+        </svg>
+        <span class="text-xs mt-1">Lists</span>
+      <% end %>
+    </div>
+  </div>
+</div>

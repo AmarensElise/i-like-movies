@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :authenticate_user!, only: [:watchlist, :pitch, :actor_pitch]
+  before_action :authenticate_user!, only: [:watchlist, :watched, :liked, :pitch, :actor_pitch]
 
   def index
     @movies = Movie.order(created_at: :desc).limit(20)
@@ -142,6 +142,38 @@ def watchlist
   # Load watchlist items (with their movie) so we can show the pitch stored
   # on the watchlist_item and avoid N+1 queries when rendering the view.
   @watchlist_items = current_user.watchlist_items.joins(:movie).includes(:movie).order('movies.runtime ASC')
+end
+
+def watched
+  # Get all movies the user has viewed, with viewing details
+  @viewings = current_user.viewings.includes(:movie).order(created_at: :desc)
+  
+  # Group viewings by month for organization
+  @viewings_by_month = @viewings.group_by { |v| v.created_at.beginning_of_month }
+  
+  # Get stats
+  @total_watched = current_user.viewings.distinct.count(:movie_id)
+  @total_viewings = @viewings.count
+  @this_month = current_user.viewings.where('created_at >= ?', Time.current.beginning_of_month).count
+  @this_year = current_user.viewings.where('created_at >= ?', Time.current.beginning_of_year).count
+end
+
+def liked
+  # Get all movies the user has liked (created movie_likes for)
+  @movie_likes = current_user.movie_likes.includes(:movie).order(created_at: :desc)
+  
+  # Get unique movies ordered by the most recent like
+  movie_ids_with_latest_like = current_user.movie_likes
+    .group(:movie_id)
+    .order('MAX(created_at) DESC')
+    .pluck(:movie_id)
+  
+  @liked_movies = Movie.where(id: movie_ids_with_latest_like)
+    .sort_by { |movie| movie_ids_with_latest_like.index(movie.id) }
+  
+  # Get stats
+  @total_likes = @movie_likes.count
+  @total_movies_liked = @liked_movies.count
 end
 
 def pitch

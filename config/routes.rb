@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   # config/routes.rb
-  root 'movies#index'
+  root 'search#start'
 
   get "dashboard", to: "dashboard#show"
 
@@ -35,6 +35,8 @@ Rails.application.routes.draw do
 
   # Search routes
   get 'watchlist', to: 'movies#watchlist'
+  get 'watched', to: 'movies#watched'
+  get 'liked', to: 'movies#liked'
   get 'pitch', to: 'movies#pitch'
   get 'actor_pitch', to: 'movies#actor_pitch'
 
