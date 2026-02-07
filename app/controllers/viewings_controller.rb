@@ -10,4 +10,12 @@ class ViewingsController < ApplicationController
 
     redirect_back fallback_location: movie
   end
+
+  def destroy
+    viewing = current_user.viewings.find(params[:id])
+    movie = viewing.movie
+    viewing.destroy
+
+    redirect_back fallback_location: movie
+  end
 end

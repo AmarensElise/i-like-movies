@@ -46,7 +46,7 @@ Rails.application.routes.draw do
   # resources :movies already defined above with a member route
 
   resources :watchlist_items, only: [:create, :destroy]
-  resources :viewings, only: [:create]
+  resources :viewings, only: [:create, :destroy]
 
   # Custom Lists
   resources :lists

@@ -24,13 +24,31 @@
     <% end %>
 
     <% if movie.seen? %>
-      <!-- watched (filled eye) -->
-      <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-2 text-sm font-medium text-green-700 cursor-default" title="Watched">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-          <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
-        </svg>
-      </span>
+      <!-- watched (filled eye) with undo button -->
+      <div class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-2 text-sm font-medium text-green-700 cursor-default" title="Watched">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+            <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
+          </svg>
+          Watched
+        </span>
+        <% if user_signed_in? %>
+          <% viewing = current_user.viewings.find_by(movie: movie) %>
+          <% if viewing %>
+            <%= button_to viewing_path(viewing),
+              method: :delete,
+              data: { turbo: false, confirm: "Remove from watched?" },
+              form_class: "inline",
+              class: "inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-600 transition hover:bg-red-100 cursor-pointer",
+              title: "Undo watched" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-3 w-3">
+                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+              </svg>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% else %>
       <%= button_to viewings_path(movie_id: movie.id),
         method: :post,
