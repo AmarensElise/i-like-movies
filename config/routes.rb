@@ -24,9 +24,7 @@ Rails.application.routes.draw do
   resources :favorite_actors, only: [:create, :destroy]
 
   # TV Shows
-  # Canonical show URL: /show/:slug
-  get 'show/:id', to: 'shows#show', as: :show
-  resources :shows, only: [:index, :show], path: 'shows' do
+  resources :shows, only: [:index, :show] do
     member do
       get :cast
       post :fetch_cast
