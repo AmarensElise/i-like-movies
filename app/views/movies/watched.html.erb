@@ -9,11 +9,11 @@
       
       <!-- Toggle Buttons -->
       <div class="inline-flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
-        <%= link_to watched_movies_path(sort: 'watch_date'), 
+        <%= link_to watched_path(sort: 'watch_date'), 
                     class: "px-4 py-2 text-sm font-medium rounded-md transition-colors #{'bg-indigo-600 text-white' if @sort_by == 'watch_date'} #{'text-gray-700 hover:text-gray-900' if @sort_by != 'watch_date'}" do %>
           📅 Watch Date
         <% end %>
-        <%= link_to watched_movies_path(sort: 'release_year'), 
+        <%= link_to watched_path(sort: 'release_year'), 
                     class: "px-4 py-2 text-sm font-medium rounded-md transition-colors #{'bg-indigo-600 text-white' if @sort_by == 'release_year'} #{'text-gray-700 hover:text-gray-900' if @sort_by != 'release_year'}" do %>
           🗓️ Release Year
         <% end %>
