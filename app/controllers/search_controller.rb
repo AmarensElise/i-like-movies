@@ -69,26 +69,39 @@ class SearchController < ApplicationController
   end
 
   def process_tmdb_results(results)
-    # Process the TMDB results to match your expected format
+    # Find or create movies to ensure we have slugs
     results.map do |result|
-      {
-        tmdb_id: result['id'],
-        title: result['title'],
-        release_date: result['release_date'],
-        poster_path: result['poster_path']
-      }
-    end
+      movie = Movie.find_by(tmdb_id: result['id'])
+      
+      unless movie
+        movie = Movie.create(
+          tmdb_id: result['id'],
+          title: result['title'],
+          release_date: result['release_date'],
+          poster_path: result['poster_path']
+        )
+      end
+      
+      movie
+    end.compact
   end
 
   def process_tmdb_show_results(results)
+    # Find or create shows to ensure we have slugs
     results.map do |result|
-      {
-        tmdb_id: result['id'],
-        name: result['name'],
-        first_air_date: result['first_air_date'],
-        poster_path: result['poster_path']
-      }
-    end
+      show = Show.find_by(tmdb_id: result['id'])
+      
+      unless show
+        show = Show.create(
+          tmdb_id: result['id'],
+          name: result['name'],
+          first_air_date: result['first_air_date'],
+          poster_path: result['poster_path']
+        )
+      end
+      
+      show
+    end.compact
   end
 
   def save_movie_from_tmdb(movie_data)

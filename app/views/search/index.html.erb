@@ -25,10 +25,10 @@
           <% end %>
           <% @tmdb_movies&.each do |movie| %>
             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <%= link_to movie_path(movie[:tmdb_id]) do %>
-                <% if movie[:poster_path].present? %>
-                  <img src="https://image.tmdb.org/t/p/w500<%= movie[:poster_path] %>"
-                       alt="<%= movie[:title] %>"
+              <%= link_to movie_path(movie) do %>
+                <% if movie.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+                       alt="<%= movie.title %>"
                        class="w-full h-64 object-cover" />
                 <% else %>
                   <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
@@ -36,8 +36,8 @@
                   </div>
                 <% end %>
                 <div class="p-4">
-                  <h3 class="font-semibold text-lg truncate"><%= movie[:title] %></h3>
-                  <p class="text-gray-600"><%= Date.parse(movie[:release_date]).year rescue nil %></p>
+                  <h3 class="font-semibold text-lg truncate"><%= movie.title %></h3>
+                  <p class="text-gray-600"><%= movie.release_date&.year %></p>
                 </div>
               <% end %>
             </div>
@@ -74,10 +74,10 @@
 
           <% @tmdb_shows&.each do |show| %>
             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <%= link_to show_path(show[:tmdb_id]) do %>
-                <% if show[:poster_path].present? %>
-                  <img src="https://image.tmdb.org/t/p/w500<%= show[:poster_path] %>"
-                       alt="<%= show[:name] %>"
+              <%= link_to show_path(show) do %>
+                <% if show.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w500<%= show.poster_path %>"
+                       alt="<%= show.name %>"
                        class="w-full h-64 object-cover" />
                 <% else %>
                   <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
@@ -85,8 +85,8 @@
                   </div>
                 <% end %>
                 <div class="p-4">
-                  <h3 class="font-semibold text-lg truncate"><%= show[:name] %></h3>
-                  <p class="text-gray-600"><%= Date.parse(show[:first_air_date]).year rescue nil %></p>
+                  <h3 class="font-semibold text-lg truncate"><%= show.name %></h3>
+                  <p class="text-gray-600"><%= show.first_air_date&.year %></p>
                 </div>
               <% end %>
             </div>
