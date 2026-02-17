@@ -1,6 +1,8 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="text-center mb-8">
-    <h1 class="text-2xl font-bold mb-2">What are you looking for?</h1>
+<div class="min-h-screen flex items-center">
+  <div class="container mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-bold mb-2">What are you looking for?</h1>
+    </div>
+    <%= render 'search/search_form', query: @query %>
   </div>
-  <%= render 'search/search_form', query: @query %>
-      </div>
+</div>
