@@ -1,6 +1,6 @@
 <div class="max-w-3xl mx-auto">
   <%= form_with url: search_path, method: :get, class: "flex w-full" do |f| %>
-    <div class="flex w-full shadow-sm rounded-3xl overflow-hidden">
+    <div class="flex w-full shadow-xl rounded-3xl overflow-hidden">
       <%= f.text_field :query,
                     value: query,
                     placeholder: "Type here ....",
