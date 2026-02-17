@@ -148,8 +148,20 @@ def watched
   # Get all movies the user has viewed, with viewing details
   @viewings = current_user.viewings.includes(:movie).order(created_at: :desc)
   
-  # Group viewings by month for organization
-  @viewings_by_month = @viewings.group_by { |v| v.created_at.beginning_of_month }
+  # Determine grouping based on sort parameter
+  @sort_by = params[:sort] || 'watch_date'
+  
+  if @sort_by == 'release_year'
+    # Group by release year
+    @viewings_grouped = @viewings.group_by do |v|
+      v.movie.release_date&.year || 'Unknown'
+    end
+    # Sort by year (descending), with 'Unknown' at the end
+    @viewings_grouped = @viewings_grouped.sort_by { |year, _| year == 'Unknown' ? 0 : -year }.to_h
+  else
+    # Group viewings by month for organization (default)
+    @viewings_grouped = @viewings.group_by { |v| v.created_at.beginning_of_month }
+  end
   
   # Get stats
   @total_watched = current_user.viewings.distinct.count(:movie_id)
