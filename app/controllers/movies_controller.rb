@@ -23,23 +23,42 @@ class MoviesController < ApplicationController
   def by_year
     @year = (params[:year] || Time.current.year).to_i
 
-    # Collect distinct release years for filter options
-    @years = Movie.where.not(release_date: nil)
-                  .pluck(Arel.sql('DISTINCT EXTRACT(YEAR FROM release_date)'))
-                  .map { |y| y.to_i }
-                  .sort
-                  .reverse
+    # Pull highest-grossing movies for this year from TMDB
+    tmdb_results = TmdbService.movies_by_year(@year, 1, sort_by: 'revenue.desc')
 
-    # Fallback if chosen year has no movies
-    if @years.any? && !@years.include?(@year)
-      @year = @years.first
-    end
+    # Ensure we have corresponding Movie records locally (for slugs, lists, watchlist, etc.)
+    @movies = tmdb_results.map do |result|
+      movie = Movie.find_or_initialize_by(tmdb_id: result['id'])
 
-    @movies = if @years.any?
-                Movie.released_in_year(@year).order(:title)
-              else
-                Movie.none
-              end
+      # Populate/refresh core fields we care about for browsing
+      movie.title        ||= result['title']
+      movie.release_date ||= result['release_date']
+      movie.poster_path  ||= result['poster_path']
+      movie.vote_average ||= result['vote_average']
+
+      # Some older records may be missing data; only hit TMDB for full details when needed
+      if movie.runtime.nil?
+        details = TmdbService.fetch_movie(result['id'])
+        if details.present?
+          movie.runtime      ||= details['runtime']
+          movie.vote_average ||= details['vote_average']
+        end
+      end
+
+      movie.save! if movie.changed?
+      movie
+    end.compact
+
+    # We already requested sort_by: revenue.desc from TMDB, but if that
+    # ever changes, keep ordering stable here (no revenue column locally).
+    @movies = @movies.uniq
+
+    # Build year filter options from both local DB and the current year
+    @years = (
+      Movie.where.not(release_date: nil)
+           .pluck(Arel.sql('DISTINCT EXTRACT(YEAR FROM release_date)'))
+           .map(&:to_i) + [@year]
+    ).uniq.sort.reverse
   end
 
 def show

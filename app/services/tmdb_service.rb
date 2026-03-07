@@ -133,11 +133,14 @@ end
   end
 
   # Fetch movies by release year
-  def self.movies_by_year(year, page = 1)
+  #
+  # sort_by defaults to TMDB popularity but can be set to
+  # e.g. "revenue.desc" for highest grossing.
+  def self.movies_by_year(year, page = 1, sort_by: 'popularity.desc')
     response = get("/discover/movie", query: {
       api_key: api_key,
       primary_release_year: year,
-      sort_by: 'popularity.desc',
+      sort_by: sort_by,
       page: page,
       include_adult: false
     })
