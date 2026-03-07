@@ -31,47 +31,52 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
       <% @movies.each do |movie| %>
-        <% card_bg_classes = if movie.seen? %>
-          "bg-gray-900 text-white"
+        <% if movie.seen? %>
+          <% status_bg_classes = 'bg-gray-900' %>
+          <% status_ring_classes = 'ring-2 ring-gray-900/80' %>
         <% elsif movie.on_watchlist? %>
-          "bg-indigo-50"
+          <% status_bg_classes = 'bg-indigo-50' %>
+          <% status_ring_classes = 'ring-2 ring-indigo-200' %>
         <% else %>
-          "bg-white"
+          <% status_bg_classes = 'bg-white' %>
+          <% status_ring_classes = '' %>
         <% end %>
 
-        <div class="rounded-2xl shadow-lg overflow-hidden flex flex-col transition-transform duration-150 hover:shadow-xl hover:-translate-y-0.5 <%= card_bg_classes %>">
-          <%= link_to movie_path(movie), class: "block relative pb-2/3" do %>
-            <% if movie.poster_path.present? %>
-              <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
-                   alt="<%= movie.title %>"
-                   class="absolute inset-0 w-full h-full object-cover" />
-            <% else %>
-              <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                <span class="text-gray-500 text-xs px-2 text-center">No poster available</span>
+        <div class="flex flex-col gap-2">
+          <div class="rounded-2xl p-1.5 shadow-lg transition-transform duration-150 hover:shadow-xl hover:-translate-y-0.5 <%= status_bg_classes %> <%= status_ring_classes %>">
+            <%= link_to movie_path(movie), class: "block rounded-xl overflow-hidden bg-white" do %>
+              <div class="relative aspect-[2/3] bg-gray-200">
+                <% if movie.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+                       alt="<%= movie.title %>"
+                       class="absolute inset-0 w-full h-full object-cover" />
+                <% else %>
+                  <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500 text-xs px-2 text-center">No poster available</span>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="px-3 py-2">
+                <h3 class="font-semibold text-sm truncate text-gray-900" title="<%= movie.title %>">
+                  <%= movie.title %>
+                </h3>
+                <div class="mt-1 flex items-center justify-between text-[11px] text-gray-500">
+                  <span><%= movie.release_date&.year || 'Unknown' %></span>
+                  <span>
+                    <% if movie.runtime.present? %>
+                      <%= movie.runtime %> min
+                    <% end %>
+                  </span>
+                </div>
               </div>
             <% end %>
-          <% end %>
+          </div>
 
-          <div class="p-3 flex-1 flex flex-col justify-between gap-2">
-            <div>
-              <h3 class="font-semibold text-sm truncate <%= movie.seen? ? 'text-white' : 'text-gray-900' %>" title="<%= movie.title %>">
-                <%= movie.title %>
-              </h3>
-              <div class="mt-1 flex items-center justify-between text-xs <%= movie.seen? ? 'text-gray-200' : 'text-gray-500' %>">
-                <span><%= movie.release_date&.year || 'Unknown' %></span>
-                <span>
-                  <% if movie.runtime.present? %>
-                    <%= movie.runtime %> min
-                  <% end %>
-                </span>
-              </div>
-            </div>
-
-            <div class="mt-2 pt-2 border-t <%= movie.seen? ? 'border-gray-700' : 'border-gray-100' %>">
-              <%= render "movie_actions_compact", movie: movie %>
-            </div>
+          <div class="px-1">
+            <%= render "movie_actions_compact", movie: movie %>
           </div>
         </div>
       <% end %>
