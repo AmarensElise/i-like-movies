@@ -22,9 +22,13 @@ class MoviesController < ApplicationController
 
   def by_year
     @year = (params[:year] || Time.current.year).to_i
+    @page = (params[:page] || 1).to_i
 
     # Pull highest-grossing movies for this year from TMDB
-    tmdb_results = TmdbService.movies_by_year(@year, 1, sort_by: 'revenue.desc')
+    tmdb_response = TmdbService.movies_by_year(@year, @page, sort_by: 'revenue.desc')
+    tmdb_results  = tmdb_response[:results]
+    @page         = tmdb_response[:page]
+    @total_pages  = tmdb_response[:total_pages]
 
     # Ensure we have corresponding Movie records locally (for slugs, lists, watchlist, etc.)
     @movies = tmdb_results.map do |result|

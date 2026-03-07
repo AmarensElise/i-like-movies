@@ -33,7 +33,15 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
       <% @movies.each do |movie| %>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+        <% card_bg_classes = if movie.seen? %>
+          "bg-gray-900 text-white"
+        <% elsif movie.on_watchlist? %>
+          "bg-indigo-50"
+        <% else %>
+          "bg-white"
+        <% end %>
+
+        <div class="rounded-2xl shadow-lg overflow-hidden flex flex-col transition-transform duration-150 hover:shadow-xl hover:-translate-y-0.5 <%= card_bg_classes %>">
           <%= link_to movie_path(movie), class: "block relative pb-2/3" do %>
             <% if movie.poster_path.present? %>
               <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
@@ -48,10 +56,10 @@
 
           <div class="p-3 flex-1 flex flex-col justify-between gap-2">
             <div>
-              <h3 class="font-semibold text-gray-900 text-sm truncate" title="<%= movie.title %>">
+              <h3 class="font-semibold text-sm truncate <%= movie.seen? ? 'text-white' : 'text-gray-900' %>" title="<%= movie.title %>">
                 <%= movie.title %>
               </h3>
-              <div class="mt-1 flex items-center justify-between text-xs text-gray-500">
+              <div class="mt-1 flex items-center justify-between text-xs <%= movie.seen? ? 'text-gray-200' : 'text-gray-500' %>">
                 <span><%= movie.release_date&.year || 'Unknown' %></span>
                 <span>
                   <% if movie.runtime.present? %>
@@ -61,13 +69,43 @@
               </div>
             </div>
 
-            <div class="mt-2 border-t border-gray-100 pt-2">
-              <%= render "movie_actions", movie: movie %>
+            <div class="mt-2 pt-2 border-t <%= movie.seen? ? 'border-gray-700' : 'border-gray-100' %>">
+              <%= render "movie_actions_compact", movie: movie %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
+
+    <% if @total_pages.to_i > 1 %>
+      <div class="mt-8 flex items-center justify-center gap-4 text-sm">
+        <% if @page > 1 %>
+          <%= link_to by_year_movies_path(year: @year, page: @page - 1),
+                      class: "inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-gray-700 hover:bg-gray-50" do %>
+            ← Previous
+          <% end %>
+        <% else %>
+          <span class="inline-flex items-center rounded-full border border-gray-100 bg-gray-50 px-3 py-1.5 text-gray-400 cursor-default">
+            ← Previous
+          </span>
+        <% end %>
+
+        <span class="text-gray-500">
+          Page <%= @page %> of <%= @total_pages %>
+        </span>
+
+        <% if @page < @total_pages %>
+          <%= link_to by_year_movies_path(year: @year, page: @page + 1),
+                      class: "inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1.5 text-gray-700 hover:bg-gray-50" do %>
+            Next →
+          <% end %>
+        <% else %>
+          <span class="inline-flex items-center rounded-full border border-gray-100 bg-gray-50 px-3 py-1.5 text-gray-400 cursor-default">
+            Next →
+          </span>
+        <% end %>
+      </div>
+    <% end %>
   <% else %>
     <div class="text-center py-16">
       <h2 class="text-xl font-semibold text-gray-900 mb-2">No movies found for this year</h2>

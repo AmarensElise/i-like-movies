@@ -134,6 +134,9 @@ end
 
   # Fetch movies by release year
   #
+  # Returns a hash with :results, :page, and :total_pages so callers
+  # can implement pagination.
+  #
   # sort_by defaults to TMDB popularity but can be set to
   # e.g. "revenue.desc" for highest grossing.
   def self.movies_by_year(year, page = 1, sort_by: 'popularity.desc')
@@ -145,7 +148,13 @@ end
       include_adult: false
     })
 
-    response.success? ? response['results'] : []
+    return { results: [], page: page, total_pages: 0 } unless response.success?
+
+    {
+      results:      response['results'] || [],
+      page:         response['page'] || page,
+      total_pages:  response['total_pages'] || 0
+    }
   end
 
   # Fetch movies by actor
