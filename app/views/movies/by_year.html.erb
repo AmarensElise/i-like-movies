@@ -1,0 +1,81 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Browse by Year</h1>
+      <p class="mt-2 text-sm text-gray-600">Pick a release year and quickly mark movies as watched or add them to your watchlist.</p>
+    </div>
+
+    <% if @years.present? %>
+      <div class="flex items-center gap-3 flex-wrap justify-start md:justify-end">
+        <span class="text-sm text-gray-600">Year:</span>
+        <div class="flex flex-wrap gap-2">
+          <% @years.each do |year_option| %>
+            <%= link_to by_year_movies_path(year: year_option),
+                        class: "px-3 py-1.5 rounded-full text-sm font-medium border transition #{year_option == @year ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'}" do %>
+              <%= year_option %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @movies.any? %>
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="text-xl font-semibold text-gray-900">
+        Movies released in <%= @year %>
+      </h2>
+      <p class="text-sm text-gray-500">
+        <%= pluralize(@movies.count, 'movie') %>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <% @movies.each do |movie| %>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+          <%= link_to movie_path(movie), class: "block relative pb-2/3" do %>
+            <% if movie.poster_path.present? %>
+              <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
+                   alt="<%= movie.title %>"
+                   class="absolute inset-0 w-full h-full object-cover" />
+            <% else %>
+              <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500 text-xs px-2 text-center">No poster available</span>
+              </div>
+            <% end %>
+          <% end %>
+
+          <div class="p-3 flex-1 flex flex-col justify-between gap-2">
+            <div>
+              <h3 class="font-semibold text-gray-900 text-sm truncate" title="<%= movie.title %>">
+                <%= movie.title %>
+              </h3>
+              <div class="mt-1 flex items-center justify-between text-xs text-gray-500">
+                <span><%= movie.release_date&.year || 'Unknown' %></span>
+                <span>
+                  <% if movie.runtime.present? %>
+                    <%= movie.runtime %> min
+                  <% end %>
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-2 border-t border-gray-100 pt-2">
+              <%= render "movie_actions", movie: movie %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16">
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">No movies found for this year</h2>
+      <p class="text-gray-600 mb-6">Try choosing a different year with more releases.</p>
+      <% if @years.present? %>
+        <%= link_to "Jump to most recent year", by_year_movies_path(year: @years.first),
+                    class: "inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

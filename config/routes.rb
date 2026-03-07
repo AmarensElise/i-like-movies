@@ -19,6 +19,10 @@ Rails.application.routes.draw do
       get :cast
       post :fetch_cast
     end
+
+    collection do
+      get :by_year
+    end
   end
   resources :actors, only: [:show, :index]
   resources :favorite_actors, only: [:create, :destroy]

@@ -20,6 +20,28 @@ class MoviesController < ApplicationController
     @popular_movies = @movies  # Use the same movies as popular movies for now
   end
 
+  def by_year
+    @year = (params[:year] || Time.current.year).to_i
+
+    # Collect distinct release years for filter options
+    @years = Movie.where.not(release_date: nil)
+                  .pluck(Arel.sql('DISTINCT EXTRACT(YEAR FROM release_date)'))
+                  .map { |y| y.to_i }
+                  .sort
+                  .reverse
+
+    # Fallback if chosen year has no movies
+    if @years.any? && !@years.include?(@year)
+      @year = @years.first
+    end
+
+    @movies = if @years.any?
+                Movie.released_in_year(@year).order(:title)
+              else
+                Movie.none
+              end
+  end
+
 def show
   # First try friendly_id / DB lookup (slug or numeric id)
   begin
