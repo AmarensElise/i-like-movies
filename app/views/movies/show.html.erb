@@ -20,15 +20,17 @@
 
     <div class="md:flex">
       <!-- Movie Poster -->
-      <div class="md:w-1/3 lg:w-1/4">
-        <% if @movie.poster_path.present? %>
-          <img src="https://image.tmdb.org/t/p/w500<%= @movie.poster_path %>" alt="<%= @movie.title %>" class="w-full h-auto object-cover shadow-lg rounded-xl" />
-        <% else %>
+      <% if @movie.poster_path.present? %>
+        <%= vhs_image(src: "https://image.tmdb.org/t/p/w500#{@movie.poster_path}",
+                      alt: @movie.title,
+                      container_class: "md:w-1/3 lg:w-1/4") %>
+      <% else %>
+        <div class="md:w-1/3 lg:w-1/4">
           <div class="w-full h-72 md:h-full bg-gray-200 flex items-center justify-center">
             <span class="text-gray-500">No Poster Available</span>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
 
       <!-- Movie Info -->
       <div class="p-6 md:w-2/3 lg:w-3/4">
