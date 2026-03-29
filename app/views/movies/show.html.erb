@@ -87,7 +87,60 @@
 </div>
 
 
-  <!-- Watch Providers Section -->
+  <!-- Blends Section -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-2">Blends</h2>
+    <% if @movie.blends.any? %>
+      <ul class="space-y-2">
+        <% @movie.blends.includes(:ingredient1, :ingredient2, :hint, :user).each do |blend| %>
+          <li class="bg-gray-100 rounded p-3 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center gap-4 mb-2 md:mb-0">
+              <%# Ingredient 1 poster %>
+              <%= link_to movie_path(blend.ingredient1), class: 'block' do %>
+                <% if blend.ingredient1.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w92<%= blend.ingredient1.poster_path %>" alt="<%= blend.ingredient1.title %>" class="w-16 h-24 object-cover rounded shadow" />
+                <% else %>
+                  <div class="w-16 h-24 bg-gray-300 flex items-center justify-center rounded text-xs text-gray-500">No Poster</div>
+                <% end %>
+              <% end %>
+              <span class="font-semibold">meets</span>
+              <%# Ingredient 2 poster %>
+              <%= link_to movie_path(blend.ingredient2), class: 'block' do %>
+                <% if blend.ingredient2.poster_path.present? %>
+                  <img src="https://image.tmdb.org/t/p/w92<%= blend.ingredient2.poster_path %>" alt="<%= blend.ingredient2.title %>" class="w-16 h-24 object-cover rounded shadow" />
+                <% else %>
+                  <div class="w-16 h-24 bg-gray-300 flex items-center justify-center rounded text-xs text-gray-500">No Poster</div>
+                <% end %>
+              <% end %>
+              <% if blend.hint %>
+                <span class="font-semibold">with a hint of</span>
+                <%= link_to movie_path(blend.hint), class: 'block' do %>
+                  <% if blend.hint.poster_path.present? %>
+                    <img src="https://image.tmdb.org/t/p/w92<%= blend.hint.poster_path %>" alt="<%= blend.hint.title %>" class="w-16 h-24 object-cover rounded shadow" />
+                  <% else %>
+                    <div class="w-16 h-24 bg-gray-300 flex items-center justify-center rounded text-xs text-gray-500">No Poster</div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="flex flex-col md:items-end">
+              <span class="text-xs text-gray-500 mb-1">by <%= blend.user.email %></span>
+              <% if user_signed_in? && blend.user == current_user %>
+                <%= button_to 'Delete', movie_blend_path(@movie, blend), method: :delete, data: { confirm: 'Are you sure?' }, class: 'ml-4 text-xs text-red-600' %>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500">No blends yet. Be the first to add one!</p>
+    <% end %>
+    <% if user_signed_in? %>
+      <div class="mt-4">
+        <%= link_to 'Add Blend', new_movie_blend_path(@movie), class: 'bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-500' %>
+      </div>
+    <% end %>
+  </div>
   <div class="mb-8">
     <%= render "availability", watch_providers: @watch_providers %>
   </div>

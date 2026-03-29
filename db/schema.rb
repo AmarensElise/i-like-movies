@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_15_100002) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_29_115628) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,18 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_15_100002) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.index ["slug"], name: "index_actors_on_slug", unique: true
+  end
+
+  create_table "blends", force: :cascade do |t|
+    t.bigint "movie_id", null: false
+    t.integer "ingredient1_id"
+    t.integer "ingredient2_id"
+    t.integer "hint_id"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_blends_on_movie_id"
+    t.index ["user_id"], name: "index_blends_on_user_id"
   end
 
   create_table "favorite_actors", force: :cascade do |t|
@@ -191,6 +203,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_15_100002) do
     t.index ["user_id"], name: "index_watchlist_items_on_user_id"
   end
 
+  add_foreign_key "blends", "movies"
+  add_foreign_key "blends", "users"
   add_foreign_key "favorite_actors", "actors"
   add_foreign_key "favorite_actors", "users"
   add_foreign_key "list_item_stickers", "list_items"

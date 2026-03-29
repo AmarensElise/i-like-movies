@@ -1,0 +1,35 @@
+<%# app/views/blends/_form.html.erb %>
+<%= form_with(model: [ @movie, Blend.new ], local: true, id: 'blend-form', html: { style: 'display:none;' }) do |f| %>
+  <div class="mb-2" data-controller="blend-search" data-blend-search-url-value="/movies_search">
+    <label class="block text-sm font-medium text-gray-700">First Movie</label>
+    <input type="text" class="w-full rounded border-gray-300" placeholder="Type to search..." data-blend-search-target="input" oninput="this.closest('[data-controller]').controller.search()">
+    <input type="hidden" name="blend[ingredient1_id]" data-blend-search-target="hidden">
+    <div data-blend-search-target="results" class="absolute bg-white border border-gray-200 w-full z-10"></div>
+  </div>
+  <div class="mb-2" data-controller="blend-search" data-blend-search-url-value="/movies_search">
+    <label class="block text-sm font-medium text-gray-700">Second Movie</label>
+    <input type="text" class="w-full rounded border-gray-300" placeholder="Type to search..." data-blend-search-target="input" oninput="this.closest('[data-controller]').controller.search()">
+    <input type="hidden" name="blend[ingredient2_id]" data-blend-search-target="hidden">
+    <div data-blend-search-target="results" class="absolute bg-white border border-gray-200 w-full z-10"></div>
+  </div>
+  <div class="mb-2" data-controller="blend-search" data-blend-search-url-value="/movies_search">
+    <label class="block text-sm font-medium text-gray-700">With a hint of (optional)</label>
+    <input type="text" class="w-full rounded border-gray-300" placeholder="Type to search..." data-blend-search-target="input" oninput="this.closest('[data-controller]').controller.search()">
+    <input type="hidden" name="blend[hint_id]" data-blend-search-target="hidden">
+    <div data-blend-search-target="results" class="absolute bg-white border border-gray-200 w-full z-10"></div>
+  </div>
+  <div class="flex justify-end">
+    <%= f.submit 'Create Blend', class: 'bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-500' %>
+  </div>
+<% end %>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var showBtn = document.getElementById('show-blend-form');
+    var form = document.getElementById('blend-form');
+    if (showBtn && form) {
+      showBtn.addEventListener('click', function() {
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  });
+</script>

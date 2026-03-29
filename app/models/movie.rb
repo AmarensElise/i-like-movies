@@ -12,6 +12,13 @@ class Movie < ApplicationRecord
   has_many :lists, through: :list_items
   has_many :movie_likes, dependent: :destroy
 
+  # Blend associations
+  has_many :blends, dependent: :destroy
+  has_many :created_blends, class_name: 'Blend', foreign_key: 'movie_id'
+  has_many :blend_ingredient1, class_name: 'Blend', foreign_key: 'ingredient1_id'
+  has_many :blend_ingredient2, class_name: 'Blend', foreign_key: 'ingredient2_id'
+  has_many :blend_hints, class_name: 'Blend', foreign_key: 'hint_id'
+
 
   # Validations
   validates :tmdb_id, presence: true, uniqueness: true

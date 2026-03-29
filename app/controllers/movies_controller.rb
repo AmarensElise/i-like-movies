@@ -117,6 +117,8 @@ def show
     end
   end
 
+  # Load blends for this movie (with eager loading for ingredients and user)
+  @movie.blends.includes(:ingredient1, :ingredient2, :hint, :user)
   # Load the cast (actors and their roles)
   # @cast = @movie.roles.includes(:actor).order(:id)
   # Get additional details from TMDB for the view

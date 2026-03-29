@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'movies_search', to: 'movies_search#index'
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -26,6 +27,8 @@ Rails.application.routes.draw do
     collection do
       get :by_year
     end
+
+    resources :blends, only: [:new, :create, :destroy]
   end
   resources :actors, only: [:show, :index]
   resources :favorite_actors, only: [:create, :destroy]

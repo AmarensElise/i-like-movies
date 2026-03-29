@@ -1,0 +1,184 @@
+<%# app/views/blends/new.html.erb %>
+<div class="max-w-2xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Create a Blend for <%= link_to @movie.title, movie_path(@movie), class: 'text-indigo-600 hover:underline' %></h1>
+
+  <div class="mb-8">
+    <form id="blend-builder" action="<%= movie_blends_path(@movie) %>" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="blend[ingredient1_id]" id="ingredient1_id">
+      <input type="hidden" name="blend[ingredient2_id]" id="ingredient2_id">
+      <input type="hidden" name="blend[hint_id]" id="hint_id">
+
+      <div class="mb-6 flex gap-4 justify-center">
+        <div class="flex flex-col items-center">
+          <div id="slot-1" class="w-32 h-48 bg-gray-200 flex items-center justify-center rounded overflow-hidden mb-2">
+            <span class="text-gray-400" style="font-size:2rem;">+</span>
+          </div>
+          <span class="text-xs text-gray-600">First Movie</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div id="slot-2" class="w-32 h-48 bg-gray-200 flex items-center justify-center rounded overflow-hidden mb-2">
+            <span class="text-gray-400" style="font-size:2rem;">+</span>
+          </div>
+          <span class="text-xs text-gray-600">Second Movie</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div id="slot-hint" class="w-32 h-48 bg-gray-100 flex items-center justify-center rounded overflow-hidden mb-2">
+            <span class="text-gray-300" style="font-size:1.5rem;">(optional)</span>
+          </div>
+          <span class="text-xs text-gray-500">Hint</span>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Search for movies to add</label>
+        <input type="text" id="blend-movie-search" class="w-full rounded border-gray-300" placeholder="Type to search...">
+      </div>
+      <div id="blend-search-results" class="bg-white border border-gray-200 w-full z-10 mt-1"></div>
+
+      <div class="flex justify-end mt-6">
+        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-500">Create Blend</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  // Simple JS for blend builder
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('blend-movie-search');
+    const resultsDiv = document.getElementById('blend-search-results');
+    const selectedList = document.getElementById('blend-selected-movies');
+    const ingredient1 = document.getElementById('ingredient1_id');
+    const ingredient2 = document.getElementById('ingredient2_id');
+    const hint = document.getElementById('hint_id');
+    let selected = [];
+    const slot1 = document.getElementById('slot-1');
+    const slot2 = document.getElementById('slot-2');
+    const slotHint = document.getElementById('slot-hint');
+
+    function updateSlots() {
+      // Helper to render a slot
+      function renderSlot(slot, movie, idx) {
+        slot.innerHTML = '';
+        if (movie) {
+          if (movie.poster_path) {
+            const img = document.createElement('img');
+            img.src = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+            img.alt = movie.title;
+            img.className = 'w-full h-full object-cover';
+            slot.appendChild(img);
+          } else {
+            const span = document.createElement('span');
+            span.textContent = movie.title;
+            span.className = 'text-xs text-gray-700 text-center px-2';
+            slot.appendChild(span);
+          }
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = '✕';
+          removeBtn.className = 'absolute top-1 right-1 bg-white rounded-full text-red-500 px-1 py-0.5 text-xs shadow';
+          removeBtn.onclick = (e) => {
+            e.preventDefault();
+            selected.splice(idx, 1);
+            updateSlots();
+            updateHiddenFields();
+          };
+          slot.style.position = 'relative';
+          slot.appendChild(removeBtn);
+        } else {
+          slot.innerHTML = '<span class="text-gray-400" style="font-size:2rem;">+</span>';
+        }
+      }
+      renderSlot(slot1, selected[0], 0);
+      renderSlot(slot2, selected[1], 1);
+      // Hint slot
+      slotHint.innerHTML = '';
+      if (selected[2]) {
+        if (selected[2].poster_path) {
+          const img = document.createElement('img');
+          img.src = `https://image.tmdb.org/t/p/w200${selected[2].poster_path}`;
+          img.alt = selected[2].title;
+          img.className = 'w-full h-full object-cover';
+          slotHint.appendChild(img);
+        } else {
+          const span = document.createElement('span');
+          span.textContent = selected[2].title;
+          span.className = 'text-xs text-gray-700 text-center px-2';
+          slotHint.appendChild(span);
+        }
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✕';
+        removeBtn.className = 'absolute top-1 right-1 bg-white rounded-full text-red-500 px-1 py-0.5 text-xs shadow';
+        removeBtn.onclick = (e) => {
+          e.preventDefault();
+          selected.splice(2, 1);
+          updateSlots();
+          updateHiddenFields();
+        };
+        slotHint.style.position = 'relative';
+        slotHint.appendChild(removeBtn);
+      } else {
+        slotHint.innerHTML = '<span class="text-gray-300" style="font-size:1.5rem;">(optional)</span>';
+      }
+      updateHiddenFields();
+    }
+
+    function updateHiddenFields() {
+      ingredient1.value = selected[0]?.id || '';
+      ingredient2.value = selected[1]?.id || '';
+      hint.value = selected[2]?.id || '';
+    }
+
+    // Prevent Enter from submitting form while searching
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+      }
+    });
+
+    searchInput.addEventListener('input', function() {
+      const q = searchInput.value.trim();
+      if (q.length < 2) {
+        resultsDiv.innerHTML = '';
+        return;
+      }
+      fetch(`/movies_search?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(movies => {
+          resultsDiv.innerHTML = '';
+          movies.forEach(movie => {
+            if (selected.find(sel => sel.id === movie.id)) return;
+            const div = document.createElement('div');
+            div.className = 'flex items-center gap-2 cursor-pointer px-2 py-1 hover:bg-indigo-100';
+            if (movie.poster_path) {
+              const img = document.createElement('img');
+              img.src = `https://image.tmdb.org/t/p/w92${movie.poster_path}`;
+              img.alt = movie.title;
+              img.className = 'w-8 h-12 object-cover rounded';
+              div.appendChild(img);
+            }
+            const span = document.createElement('span');
+            span.textContent = movie.title;
+            div.appendChild(span);
+            div.onclick = () => {
+              if (selected.length < 3) {
+                selected.push(movie);
+                updateSlots();
+                resultsDiv.innerHTML = '';
+                searchInput.value = '';
+              }
+            };
+            resultsDiv.appendChild(div);
+          });
+        });
+    });
+    // Prevent form submit if not enough movies selected
+    document.getElementById('blend-builder').addEventListener('submit', function(e) {
+      if (selected.length < 2) {
+        e.preventDefault();
+        alert('Please select at least two movies for the blend.');
+      }
+    });
+    // Initial render
+    updateSlots();
+  });
+</script>

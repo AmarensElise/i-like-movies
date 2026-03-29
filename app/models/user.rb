@@ -10,4 +10,7 @@ class User < ApplicationRecord
   has_many :stickers, dependent: :destroy
   has_many :movie_likes, dependent: :destroy
   has_many :movie_like_votes, dependent: :destroy
+
+  # Blend associations
+  has_many :blends, dependent: :destroy
 end
