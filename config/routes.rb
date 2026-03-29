@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   # config/routes.rb
   root 'search#start'
 
+  get 'home', to: 'home#index'
+  get 'menu', to: 'menu#index'
+
   get "dashboard", to: "dashboard#show"
 
   resources :movies, only: [:index, :show] do
@@ -51,8 +54,14 @@ Rails.application.routes.draw do
   resources :viewings, only: [:create, :destroy]
 
   # Custom Lists
-  resources :lists
-  resources :list_items, only: [:create, :destroy]
+  resources :lists do
+    resources :list_items, only: [:create, :show, :update, :destroy] do
+      resources :list_item_stickers, only: [:create, :destroy]
+    end
+  end
+
+  # User-created custom stickers
+  resources :stickers, only: [:create, :update, :destroy]
 
   # Movie Likes (things people like about movies)
   resources :movie_likes, only: [:create, :destroy]

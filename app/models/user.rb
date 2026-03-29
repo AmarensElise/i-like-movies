@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :viewings, dependent: :destroy
   has_many :favorite_actors, dependent: :destroy
   has_many :lists, dependent: :destroy
+  has_many :stickers, dependent: :destroy
   has_many :movie_likes, dependent: :destroy
   has_many :movie_like_votes, dependent: :destroy
 end

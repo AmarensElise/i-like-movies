@@ -7,7 +7,11 @@ class ListsController < ApplicationController
   end
 
   def show
-    @movies = @list.movies.order("list_items.created_at DESC")
+    @list_items = @list.list_items
+                       .includes(:movie, :stickers)
+                       .order(:position)
+    @available_stickers = Sticker.presets + Sticker.custom_for(current_user)
+    @other_lists = current_user.lists.where.not(id: @list.id).order(:name)
   end
 
   def new

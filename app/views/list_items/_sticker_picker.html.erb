@@ -1,0 +1,69 @@
+<%# Sticker picker panel — shown inside the detail modal %>
+<% applied_ids = list_item.sticker_ids %>
+<% preset_stickers = available_stickers.select(&:preset) %>
+<% custom_stickers = available_stickers.reject(&:preset) %>
+
+<%# Section 1: Genre / Preset stickers %>
+<div class="mb-4">
+  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Genre Stickers</h4>
+  <div id="<%= dom_id(list_item, :preset_sticker_pills) %>" class="flex flex-wrap gap-2">
+    <% preset_stickers.each do |sticker| %>
+      <% applied = applied_ids.include?(sticker.id) %>
+      <% if applied %>
+        <% lis = list_item.list_item_stickers.find_by(sticker: sticker) %>
+        <%= button_to list_list_item_list_item_sticker_path(list, list_item, lis),
+            method: :delete,
+            class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white ring-2 ring-offset-1 ring-white transition",
+            style: "background-color: #{sticker.color};",
+            form: { data: { turbo_frame: "_top" } } do %>
+          <%= sticker.label %> ✓
+        <% end %>
+      <% else %>
+        <%= button_to list_list_item_list_item_stickers_path(list, list_item),
+            params: { sticker_id: sticker.id },
+            class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white opacity-60 hover:opacity-100 transition",
+            style: "background-color: #{sticker.color};",
+            form: { data: { turbo_frame: "_top" } } do %>
+          <%= sticker.label %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<%# Section 2: Custom stickers %>
+<div>
+  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">My Stickers</h4>
+  <div id="custom_stickers_list" class="flex flex-wrap gap-2 mb-3">
+    <% custom_stickers.each do |sticker| %>
+      <% applied = applied_ids.include?(sticker.id) %>
+      <% if applied %>
+        <% lis = list_item.list_item_stickers.find_by(sticker: sticker) %>
+        <%= button_to list_list_item_list_item_sticker_path(list, list_item, lis),
+            method: :delete,
+            class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white ring-2 ring-offset-1 ring-white transition",
+            style: "background-color: #{sticker.color};",
+            form: { data: { turbo_frame: "_top" } } do %>
+          <%= sticker.label %> ✓
+        <% end %>
+      <% else %>
+        <%= button_to list_list_item_list_item_stickers_path(list, list_item),
+            params: { sticker_id: sticker.id },
+            class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white opacity-60 hover:opacity-100 transition",
+            style: "background-color: #{sticker.color};",
+            form: { data: { turbo_frame: "_top" } } do %>
+          <%= sticker.label %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if custom_stickers.empty? %>
+      <p class="text-xs text-gray-400 italic">No custom stickers yet</p>
+    <% end %>
+  </div>
+
+  <%# Create new sticker inline form %>
+  <div id="new_sticker_form">
+    <%= render partial: "stickers/form", locals: { sticker: Sticker.new(color: "#6B7280") } %>
+  </div>
+</div>

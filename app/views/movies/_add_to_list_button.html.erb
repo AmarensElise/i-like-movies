@@ -25,7 +25,7 @@
               <%= list.name %>
             </div>
           <% else %>
-            <%= button_to list_items_path(list_id: list.id, movie_id: movie.id), method: :post, data: { turbo: false }, class: "w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 rounded block" do %>
+            <%= button_to list_list_items_path(list, movie_id: movie.id), method: :post, data: { turbo: false }, class: "w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 rounded block" do %>
               <%= list.name %>
             <% end %>
           <% end %>

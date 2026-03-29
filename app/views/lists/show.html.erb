@@ -1,80 +1,70 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="mb-6">
-    <%= link_to lists_path, class: "text-blue-600 hover:text-blue-800" do %>
-      ← Back to All Lists
-    <% end %>
-  </div>
+<div class="min-h-screen" data-controller="modal" data-action="keydown@window->modal#closeWithKeyboard">
+  <div class="container mx-auto px-4 py-8">
+    <%# Top navigation: back link + list switcher %>
+    <div class="flex items-center justify-between mb-6">
+      <%= link_to lists_path, class: "text-blue-600 hover:text-blue-800 inline-flex items-center gap-1" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+        All Lists
+      <% end %>
 
-  <div class="text-center mb-8">
-    <h1 class="text-6xl font-bold text-gray-800 mb-2"><%= @list.name %></h1>
-    <% if @list.description.present? %>
-      <p class="text-gray-500 my-4 text-lg"><%= @list.description %></p>
-    <% end %>
-    <div class="flex items-center justify-center text-sm text-gray-500 mb-4">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-      </svg>
-      <%= pluralize(@movies.count, 'movie') %>
-    </div>
-    <%= link_to edit_list_path(@list), class: "inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-      </svg>
-      Edit List
-    <% end %>
-  </div>
-
-  <% if @movies.empty? %>
-    <div class="text-center py-12 bg-white rounded-xl shadow-lg">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 mx-auto text-gray-400 mb-4">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-      </svg>
-      <p class="text-xl text-gray-600 mb-4">This list is empty</p>
-      <p class="text-gray-500 mb-6">Browse movies and add them to this list</p>
-      <%= link_to "Browse Movies", movies_path, class: "inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700" %>
-    </div>
-  <% else %>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-      <% @movies.each do |movie| %>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:shadow-xl hover:scale-105">
-          <%= link_to movie_path(movie), class: "block" do %>
-            <div class="relative">
-              <% if movie.poster_path %>
-                <img
-                  src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>"
-                  alt="<%= movie.title %>"
-                  class="w-full h-full object-cover rounded-t-xl"
-                  loading="lazy"
-                >
-              <% else %>
-                <div class="bg-gray-200 h-64 flex items-center justify-center rounded-t-xl">
-                  <span class="text-gray-500">No poster</span>
-                </div>
-              <% end %>
-
-              <div class="absolute top-2 right-2 bg-yellow-400 text-gray-800 font-bold rounded-full w-10 h-10 flex items-center justify-center shadow-md">
-                <%= movie.vote_average&.round(1) || 'N/A' %>
-              </div>
-            </div>
-
-            <div class="p-4">
-              <h2 class="font-bold text-gray-800 truncate mb-1 text-lg" title="<%= movie.title %>">
-                <%= movie.title %>
-              </h2>
-              <p class="text-sm text-gray-600"><%= movie.release_date&.year || 'Unknown' %></p>
-            </div>
+      <% if @other_lists.any? %>
+        <select onchange="if(this.value) Turbo.visit(this.value)" class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Switch list…</option>
+          <% @other_lists.each do |other_list| %>
+            <option value="<%= list_path(other_list) %>"><%= other_list.name %></option>
           <% end %>
-          
-          <div class="px-4 pb-4">
-            <% list_item = @list.list_items.find_by(movie: movie) %>
-            <% if list_item %>
-              <%= button_to list_item_path(list_item), method: :delete, data: { turbo_confirm: "Remove from this list?" }, class: "w-full text-sm text-center py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition" do %>
-                Remove from List
-              <% end %>
-            <% end %>
-          </div>
-        </div>
+        </select>
       <% end %>
     </div>
-  <% end %>
+
+    <%# List header %>
+    <div class="text-center mb-8">
+      <h1 class="text-5xl font-bold text-gray-800 mb-2"><%= @list.name %></h1>
+      <% if @list.description.present? %>
+        <p class="text-gray-500 my-4 text-lg"><%= @list.description %></p>
+      <% end %>
+      <div class="flex items-center justify-center gap-4 text-sm text-gray-500 mb-4">
+        <span class="inline-flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+          </svg>
+          <%= pluralize(@list_items.size, 'movie') %>
+        </span>
+        <%= link_to edit_list_path(@list), class: "inline-flex items-center gap-1 text-blue-600 hover:text-blue-800" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
+          Edit
+        <% end %>
+      </div>
+    </div>
+
+    <% if @list_items.empty? %>
+      <div class="text-center py-12 bg-white rounded-xl shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 mx-auto text-gray-400 mb-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+        </svg>
+        <p class="text-xl text-gray-600 mb-4">This shelf is empty</p>
+        <p class="text-gray-500 mb-6">Browse movies and add them to this list</p>
+        <%= link_to "Browse Movies", movies_path, class: "inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700" %>
+      </div>
+    <% else %>
+      <%# Horizontally scrollable shelf %>
+      <div id="shelf_items" class="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory flex-nowrap">
+        <% @list_items.each do |list_item| %>
+          <%= render partial: "lists/shelf_card", locals: { list_item: list_item, list: @list } %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Modal overlay for list item detail %>
+  <div data-modal-target="overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" data-action="click->modal#closeBackground">
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" data-action="click->modal#closeBackground:stop">
+      <button data-action="modal#close" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+      </button>
+      <turbo-frame id="list_item_detail">
+        <p class="p-12 text-center text-gray-400">Loading…</p>
+      </turbo-frame>
+    </div>
+  </div>
 </div>

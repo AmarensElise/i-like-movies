@@ -35,11 +35,11 @@
                 </div>
                 <% if movie_in_list %>
                   <% list_item = list.list_items.find_by(movie_id: movie.id) %>
-                  <%= button_to list_item_path(list_item), method: :delete, data: { turbo: false }, class: "text-xs text-red-600 hover:text-red-800 font-medium" do %>
+                  <%= button_to list_list_item_path(list, list_item), method: :delete, data: { turbo: false }, class: "text-xs text-red-600 hover:text-red-800 font-medium" do %>
                     Remove
                   <% end %>
                 <% else %>
-                  <%= button_to list_items_path(list_id: list.id, movie_id: movie.id), method: :post, data: { turbo: false }, class: "text-xs text-blue-600 hover:text-blue-800 font-medium" do %>
+                  <%= button_to list_list_items_path(list, movie_id: movie.id), method: :post, data: { turbo: false }, class: "text-xs text-blue-600 hover:text-blue-800 font-medium" do %>
                     Add
                   <% end %>
                 <% end %>

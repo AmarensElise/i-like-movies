@@ -1,0 +1,12 @@
+<%# After creating a custom sticker, append it to the custom stickers list %>
+<%= turbo_stream.append "custom_stickers_list" do %>
+  <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white opacity-60" style="background-color: <%= @sticker.color %>;">
+    <%= @sticker.label %>
+  </span>
+<% end %>
+
+<%= turbo_stream.replace "new_sticker_form" do %>
+  <div id="new_sticker_form">
+    <%= render partial: "stickers/form", locals: { sticker: Sticker.new(color: "#6B7280") } %>
+  </div>
+<% end %>

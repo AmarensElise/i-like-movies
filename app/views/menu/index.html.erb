@@ -1,0 +1,144 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+  .vhs-menu-page {
+    font-family: 'VT323', monospace;
+    background-color: #1a1a8a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    color: white;
+  }
+
+  /* CRT scanline overlay */
+  .vhs-menu-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Slight vignette */
+  .vhs-menu-page::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .vhs-menu-container {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .vhs-menu-title {
+    font-size: 3rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 3rem;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  }
+
+  .vhs-menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem 0;
+    text-align: left;
+    display: inline-block;
+  }
+
+  .vhs-menu-items li {
+    margin-bottom: 0.5rem;
+  }
+
+  .vhs-menu-items a {
+    display: block;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    color: white;
+    text-decoration: none;
+    padding: 0.3rem 1.5rem;
+    transition: all 0.05s;
+    position: relative;
+  }
+
+  .vhs-menu-items a:hover,
+  .vhs-menu-items a:focus {
+    background-color: rgba(200, 50, 50, 0.85);
+    color: white;
+    outline: none;
+  }
+
+  .vhs-menu-items a:hover::before,
+  .vhs-menu-items a:focus::before {
+    content: '→';
+    position: absolute;
+    left: -1.5rem;
+  }
+
+  .vhs-menu-instructions {
+    background-color: rgba(200, 200, 200, 0.85);
+    color: #111;
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* Subtle flicker */
+  @keyframes vhs-flicker {
+    0%   { opacity: 1; }
+    92%  { opacity: 1; }
+    93%  { opacity: 0.8; }
+    94%  { opacity: 1; }
+    95%  { opacity: 0.9; }
+    96%  { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  .vhs-menu-container {
+    animation: vhs-flicker 4s infinite;
+  }
+</style>
+
+<div class="vhs-menu-page">
+  <div class="vhs-menu-container">
+    <div class="vhs-menu-title">MAIN MENU</div>
+
+    <ul class="vhs-menu-items">
+      <li><%= link_to "SEARCH", root_path %></li>
+      <li><%= link_to "WATCHLIST", watchlist_path %></li>
+      <li><%= link_to "WATCHED", watched_path %></li>
+      <li><%= link_to "LIKED", liked_path %></li>
+      <li><%= link_to "LISTS", lists_path %></li>
+      <li><%= link_to "ACTORS", actors_path %></li>
+      <li><%= link_to "PITCH", pitch_path %></li>
+      <% if user_signed_in? %>
+        <li><%= link_to "DASHBOARD", dashboard_path %></li>
+      <% end %>
+      <li><%= link_to "HOME", home_path %></li>
+    </ul>
+
+    <div class="vhs-menu-instructions">
+      HOVER TO SELECT, THEN CLICK<br>
+      PRESS (BACK) TO RETURN
+    </div>
+  </div>
+</div>

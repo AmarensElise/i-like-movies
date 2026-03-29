@@ -1,0 +1,50 @@
+<%# After adding a sticker, update the sticker badges on the card and in the detail view %>
+<% @list_item.reload %>
+
+<%# Update sticker badges on the shelf card %>
+<%= turbo_stream.update dom_id(@list_item, :card_stickers) do %>
+  <% visible_stickers = @list_item.stickers.first(3) %>
+  <% remaining = @list_item.stickers.size - 3 %>
+  <% visible_stickers.each do |sticker| %>
+    <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm" style="background-color: <%= sticker.color %>e6;">
+      <%= sticker.label %>
+    </span>
+  <% end %>
+  <% if remaining > 0 %>
+    <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold text-white/90 bg-black/50 backdrop-blur-sm shadow-sm">
+      +<%= remaining %> more
+    </span>
+  <% end %>
+<% end %>
+
+<%# Update sticker badges in the detail view %>
+<%= turbo_stream.update dom_id(@list_item, :stickers) do %>
+  <% @list_item.stickers.each do |sticker| %>
+    <%= render partial: "list_items/sticker_badge", locals: { sticker: sticker, list_item: @list_item, list: @list } %>
+  <% end %>
+<% end %>
+
+<%# Re-render the sticker picker to update toggle states %>
+<%= turbo_stream.update dom_id(@list_item, :preset_sticker_pills) do %>
+  <% @available_stickers.select(&:preset).each do |sticker| %>
+    <% applied = @list_item.sticker_ids.include?(sticker.id) %>
+    <% if applied %>
+      <% lis = @list_item.list_item_stickers.find_by(sticker: sticker) %>
+      <%= button_to list_list_item_list_item_sticker_path(@list, @list_item, lis),
+          method: :delete,
+          class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white ring-2 ring-offset-1 ring-white transition",
+          style: "background-color: #{sticker.color};",
+          form: { data: { turbo_frame: "_top" } } do %>
+        <%= sticker.label %> ✓
+      <% end %>
+    <% else %>
+      <%= button_to list_list_item_list_item_stickers_path(@list, @list_item),
+          params: { sticker_id: sticker.id },
+          class: "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium text-white opacity-60 hover:opacity-100 transition",
+          style: "background-color: #{sticker.color};",
+          form: { data: { turbo_frame: "_top" } } do %>
+        <%= sticker.label %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

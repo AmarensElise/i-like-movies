@@ -1,0 +1,41 @@
+<%# Shelf card partial for a single list_item %>
+<% movie = list_item.movie %>
+<div id="<%= dom_id(list_item, :card) %>" class="flex-shrink-0 w-[calc(20%-0.8rem)] min-w-[140px] snap-start">
+  <div class="overflow-hidden transition duration-300 hover:-translate-y-1 cursor-pointer shadow-lg"
+       data-action="click->modal#open"
+       data-turbo-frame="list_item_detail">
+    <%= link_to list_list_item_path(list, list_item), data: { turbo_frame: "list_item_detail" }, class: "block" do %>
+      <div class="relative">
+        <% if movie.poster_path %>
+          <img src="https://image.tmdb.org/t/p/w300<%= movie.poster_path %>"
+               alt="<%= movie.title %>"
+               class="w-full aspect-[2/3] object-cover"
+               loading="lazy">
+        <% else %>
+          <div class="bg-gray-700 aspect-[2/3] flex items-center justify-center">
+            <span class="text-gray-400 text-sm">No poster</span>
+          </div>
+        <% end %>
+
+        <%# VHS texture overlay %>
+        <%= render partial: "shared/vhs_overlay", locals: { rounded: "rounded-xl" } %>
+
+        <%# Sticker badges on top of poster %>
+        <div id="<%= dom_id(list_item, :card_stickers) %>" class="absolute bottom-2 left-1.5 right-1.5 flex flex-wrap gap-1 pointer-events-none">
+          <% visible_stickers = list_item.stickers.first(3) %>
+          <% remaining = list_item.stickers.size - 3 %>
+          <% visible_stickers.each do |sticker| %>
+            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold text-white shadow-sm backdrop-blur-sm" style="background-color: <%= sticker.color %>e6;">
+              <%= sticker.label %>
+            </span>
+          <% end %>
+          <% if remaining > 0 %>
+            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold text-white/90 bg-black/50 backdrop-blur-sm shadow-sm">
+              +<%= remaining %> more
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<%= turbo_stream.remove dom_id(@list_item, :card) %>
+
+<%= turbo_stream.update "list_item_detail" do %>
+  <p class="p-12 text-center text-gray-400">Movie removed from shelf.</p>
+<% end %>

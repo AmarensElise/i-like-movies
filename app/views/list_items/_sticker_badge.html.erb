@@ -1,0 +1,13 @@
+<%# Individual sticker badge with remove action %>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-white" style="background-color: <%= sticker.color %>;">
+  <%= sticker.label %>
+  <% lis = list_item.list_item_stickers.find_by(sticker: sticker) %>
+  <% if lis %>
+    <%= button_to list_list_item_list_item_sticker_path(list, list_item, lis),
+        method: :delete,
+        class: "inline-flex hover:opacity-75 ml-0.5",
+        form: { data: { turbo_frame: "_top" } } do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-3 w-3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+    <% end %>
+  <% end %>
+</span>
