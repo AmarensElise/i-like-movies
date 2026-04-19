@@ -25,7 +25,14 @@ class Quiz < ApplicationRecord
   def self.start_for(user)
     transaction do
       existing = user.quizzes.in_progress.first
-      return existing if existing
+      if existing
+        eligible_count = existing.quiz_questions.joins(:movie).merge(Movie.quiz_eligible).count
+        question_count = existing.quiz_questions.count
+
+        return existing if question_count == 10 && eligible_count == question_count
+
+        existing.destroy!
+      end
 
       movies = Movie.random_popular(10).to_a
       raise "Not enough eligible movies to start a quiz (need 10, got #{movies.size})" if movies.size < 10

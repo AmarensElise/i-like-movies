@@ -3,6 +3,7 @@ class Movie < ApplicationRecord
   friendly_id :title, use: [:slugged, :history]
 
   QUIZ_TOP_GROSSING_PER_YEAR = 20
+  QUIZ_EXCLUDED_PATTERN = "(documentary|behind[ -]?the[ -]?scenes|featurette|making[ -]?of)"
 
   # Associations
   has_many :roles
@@ -67,7 +68,10 @@ STREAMING_REGIONS = ["MX", "AU", "GB", "SK", "US", "BR", "IS", "NO", "AR", "PT",
   scope :quiz_eligible, -> {
     top_grossing_per_year_pool
       .where.not(genres: [nil, ""])
-      .where("genres NOT ILIKE ?", "%documentary%")
+      .where(
+        "(COALESCE(movies.title, '') || ' ' || COALESCE(movies.genres, '')) !~* ?",
+        QUIZ_EXCLUDED_PATTERN
+      )
   }
 
   # Weighted-random selection for quiz questions from the eligible pool.

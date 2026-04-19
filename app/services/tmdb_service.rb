@@ -72,11 +72,13 @@ end
 
   # Fetch details about a person (actor, director, etc.)
   def self.fetch_person(person_id)
-    response = get("/person/#{person_id}", query: {
-      api_key: api_key
-    })
+    Rails.cache.fetch("tmdb_person_#{person_id}", expires_in: 24.hours) do
+      response = get("/person/#{person_id}", query: {
+        api_key: api_key
+      })
 
-    response.success? ? response : {}
+      response.success? ? response.parsed_response : {}
+    end
   end
 
   # Fetch trending movies

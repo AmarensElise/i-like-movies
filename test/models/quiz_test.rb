@@ -4,11 +4,13 @@ class QuizTest < ActiveSupport::TestCase
   test "start_for creates 10 questions" do
     user = users(:three)
 
-    assert_difference ["Quiz.count", "QuizQuestion.count"], [1, 10] do
-      quiz = Quiz.start_for(user)
-      assert_equal "in_progress", quiz.status
-      assert_equal 10, quiz.quiz_questions.count
-      assert_equal (1..10).to_a, quiz.quiz_questions.pluck(:position)
+    assert_difference "Quiz.count", 1 do
+      assert_difference "QuizQuestion.count", 10 do
+        quiz = Quiz.start_for(user)
+        assert_equal "in_progress", quiz.status
+        assert_equal 10, quiz.quiz_questions.count
+        assert_equal (1..10).to_a, quiz.quiz_questions.pluck(:position)
+      end
     end
   end
 
@@ -16,6 +18,23 @@ class QuizTest < ActiveSupport::TestCase
     quiz = Quiz.start_for(users(:one))
 
     assert_equal quizzes(:in_progress_one), quiz
+  end
+
+  test "start_for replaces stale in progress quiz with excluded movies" do
+    user = users(:two)
+    stale_quiz = user.quizzes.create!(status: "in_progress", started_at: Time.current)
+
+    eligible_movies = Movie.quiz_eligible.limit(9).to_a
+    eligible_movies.each_with_index do |movie, i|
+      stale_quiz.quiz_questions.create!(movie: movie, position: i + 1)
+    end
+    stale_quiz.quiz_questions.create!(movie: movies(:behind_scenes_movie), position: 10)
+
+    fresh_quiz = Quiz.start_for(user)
+
+    assert_not_equal stale_quiz.id, fresh_quiz.id
+    assert_equal 10, fresh_quiz.quiz_questions.count
+    assert_equal 10, fresh_quiz.quiz_questions.joins(:movie).merge(Movie.quiz_eligible).count
   end
 
   test "finalize sums points and marks quiz completed" do

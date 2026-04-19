@@ -173,3 +173,13 @@ no_genre_movie:
   popularity: 84.0
   vote_count: 1300
   revenue: 2100000
+
+behind_scenes_movie:
+  tmdb_id: 17
+  title: "Behind the Scenes: Alpha Movie"
+  release_date: 2019-09-20
+  poster_path: /bts.jpg
+  genres: Drama
+  popularity: 82.0
+  vote_count: 1250
+  revenue: 2050000

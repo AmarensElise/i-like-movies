@@ -21,6 +21,12 @@ class MovieTest < ActiveSupport::TestCase
     assert_not_includes eligible_ids, movies(:no_genre_movie).id
   end
 
+  test "quiz_eligible excludes behind-the-scenes entries" do
+    eligible_ids = Movie.quiz_eligible.pluck(:id)
+
+    assert_not_includes eligible_ids, movies(:behind_scenes_movie).id
+  end
+
   test "random_popular limits to requested eligible movies" do
     selected_ids = Movie.random_popular(5).pluck(:id)
 
