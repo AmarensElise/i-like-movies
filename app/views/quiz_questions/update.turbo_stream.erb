@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "current_question" do %>
+  <%= render 'quizzes/reveal_card', quiz: @quiz, question: @question %>
+<% end %>

@@ -1,0 +1,37 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 pb-20">
+  <div class="max-w-2xl w-full mx-auto px-4">
+    <h1 class="text-3xl font-bold text-gray-900 text-center mb-8">Pick a quiz</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <%# Guess the Year %>
+      <div class="bg-white rounded-2xl shadow-lg p-8 text-center flex flex-col">
+        <div class="text-6xl mb-4">?</div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Guess the Year</h2>
+        <p class="text-gray-600 mb-6 flex-1">10 movies. Guess the release year. Fewer years off means a better score.</p>
+
+        <div class="bg-indigo-50 rounded-xl p-4 mb-6 text-sm text-indigo-800">
+          <p class="font-semibold mb-1">Scoring</p>
+          <p>Exact year -> 0 years off &nbsp;|&nbsp; Off by 1 -> 1 point &nbsp;|&nbsp; Lower total is better</p>
+        </div>
+
+        <%= form_with url: quizzes_path, method: :post do |f| %>
+          <%= f.submit "Start Quiz ->", class: "w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors cursor-pointer text-lg" %>
+        <% end %>
+      </div>
+
+      <%# Watch Quiz %>
+      <div class="bg-white rounded-2xl shadow-lg p-8 text-center flex flex-col">
+        <div class="text-6xl mb-4">🎬</div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">What to Watch</h2>
+        <p class="text-gray-600 mb-6 flex-1">Answer a few quick questions and we'll pick the perfect movie for tonight.</p>
+
+        <div class="bg-indigo-50 rounded-xl p-4 mb-6 text-sm text-indigo-800">
+          <p class="font-semibold mb-1">5 steps</p>
+          <p>Streaming &rarr; Length &rarr; Adventurousness &rarr; Category &rarr; Pick</p>
+        </div>
+
+        <%= link_to "Start Quiz ->", watch_quiz_path, class: "w-full inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors text-lg" %>
+      </div>
+    </div>
+  </div>
+</div>

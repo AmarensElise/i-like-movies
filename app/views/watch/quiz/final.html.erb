@@ -1,0 +1,48 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 pb-20">
+  <div class="max-w-2xl w-full mx-auto px-4">
+    <%= turbo_frame_tag "quiz_step" do %>
+      <% if @no_matches %>
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+          <div class="text-5xl mb-4">🎬</div>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">No matches</h1>
+          <p class="text-gray-600 mb-8">We couldn't find any movies matching all your filters. Try again with different choices.</p>
+          <%= link_to "Start over", watch_quiz_path, class: "inline-block bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors" %>
+        </div>
+      <% else %>
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Step 5 of 5</p>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Pick your movie</h1>
+          <p class="text-gray-600 mb-8">
+            <% if @movies.size == 1 %>
+              We found one perfect match for you.
+            <% else %>
+              Two contenders — which one wins tonight?
+            <% end %>
+          </p>
+
+          <div class="grid grid-cols-1 <%= 'md:grid-cols-2 gap-6' if @movies.size > 1 %>">
+            <% @movies.each_with_index do |movie, i| %>
+              <div class="flex flex-col rounded-xl border border-gray-200 bg-gray-50 p-5">
+                <p class="text-lg font-semibold text-gray-900 mb-4"><%= movie.pitch_line(user: current_user) %></p>
+
+                <%= form_with url: complete_watch_quiz_path, method: :post, class: "mt-auto", data: { turbo_frame: "_top" } do |f| %>
+                  <%= f.hidden_field :streaming, value: params[:streaming] %>
+                  <%= f.hidden_field :length, value: params[:length] %>
+                  <%= f.hidden_field :adventurousness, value: params[:adventurousness] %>
+                  <%= f.hidden_field :category_key, value: params[:category_key] %>
+                  <%= f.hidden_field :category_label, value: params[:category_label] %>
+                  <%= f.hidden_field :chosen_movie_id, value: movie.id %>
+                  <% other = @movies[1 - i] if @movies.size > 1 %>
+                  <% if other %>
+                    <%= f.hidden_field :rejected_movie_id, value: other.id %>
+                  <% end %>
+                  <%= f.submit "Watch this", class: "w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors cursor-pointer" %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 pb-20">
+  <div class="max-w-lg w-full mx-auto px-4">
+    <%= turbo_frame_tag "quiz_step" do %>
+      <div class="bg-white rounded-2xl shadow-lg p-8">
+        <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Step 1 of 5</p>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">What can you stream?</h1>
+        <p class="text-gray-600 mb-8">Pick what's available to you tonight.</p>
+
+        <div class="space-y-3">
+          <%= link_to length_watch_quiz_path(streaming: "domestic", length: params[:length], adventurousness: params[:adventurousness]),
+                class: "block w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors" do %>
+            <p class="font-semibold text-gray-900">My country only</p>
+            <p class="text-sm text-gray-500">Netflix, Prime, Disney+ in your home region</p>
+            <% if current_user.country_code.blank? %>
+              <p class="text-xs text-amber-600 mt-1">Country not set — this will show all movies. Set it in account settings.</p>
+            <% end %>
+          <% end %>
+
+          <%= link_to length_watch_quiz_path(streaming: "vpn_ok", length: params[:length], adventurousness: params[:adventurousness]),
+                class: "block w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors" do %>
+            <p class="font-semibold text-gray-900">VPN is fine</p>
+            <p class="text-sm text-gray-500">Streaming in any supported region</p>
+          <% end %>
+
+          <%= link_to length_watch_quiz_path(streaming: "any", length: params[:length], adventurousness: params[:adventurousness]),
+                class: "block w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:bg-indigo-50 transition-colors" do %>
+            <p class="font-semibold text-gray-900">Don't filter by streaming</p>
+            <p class="text-sm text-gray-500">I'll figure it out myself</p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

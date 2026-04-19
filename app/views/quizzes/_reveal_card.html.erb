@@ -1,0 +1,49 @@
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden md:grid md:grid-cols-[360px_1fr]">
+  <div class="h-full min-h-[420px] md:min-h-[560px] overflow-hidden bg-gray-200 w-full">
+    <% if question.movie.poster_path.present? %>
+      <img src="https://image.tmdb.org/t/p/w500<%= question.movie.poster_path %>"
+           alt="<%= question.movie.title %>"
+           class="w-full h-full object-cover" />
+    <% else %>
+      <div class="w-full h-full flex items-center justify-center text-gray-400 text-4xl">?</div>
+    <% end %>
+  </div>
+
+  <div class="p-6 md:p-8 text-center">
+    <h2 class="text-xl font-bold text-gray-900 mb-6"><%= question.movie.title %></h2>
+
+    <% diff = (question.guessed_year - question.actual_year).abs %>
+    <% direction = question.guessed_year > question.actual_year ? 'late' : 'early' %>
+    <% correct = diff == 0 %>
+
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="bg-gray-50 rounded-xl p-4">
+        <p class="text-xs text-gray-500 mb-1">Your guess</p>
+        <p class="text-2xl font-bold <%= correct ? 'text-green-600' : 'text-gray-900' %>"><%= question.guessed_year %></p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4">
+        <p class="text-xs text-gray-500 mb-1">Actual year</p>
+        <p class="text-2xl font-bold text-gray-900"><%= question.actual_year %></p>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <% if correct %>
+        <p class="text-green-600 font-semibold">Exact match!</p>
+      <% else %>
+        <p class="text-gray-600">You were <%= diff %> year<%= diff == 1 ? '' : 's' %> too <%= direction %> (actual: <%= question.actual_year %>).</p>
+      <% end %>
+      <p class="text-3xl font-bold text-indigo-600 mt-1"><%= question.points_earned %> years off</p>
+    </div>
+
+    <% if quiz.finished? %>
+      <%= link_to quiz_path(quiz), class: "block w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors text-center" do %>
+        See Results ->
+      <% end %>
+    <% else %>
+      <%= link_to quiz_path(quiz), class: "block w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors text-center" do %>
+        Next ->
+      <% end %>
+    <% end %>
+  </div>
+</div>

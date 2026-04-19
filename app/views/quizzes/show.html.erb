@@ -1,0 +1,5 @@
+<% if @quiz.finished? %>
+  <%= render 'recap', quiz: @quiz %>
+<% else %>
+  <%= render 'in_progress', quiz: @quiz, question: @question %>
+<% end %>

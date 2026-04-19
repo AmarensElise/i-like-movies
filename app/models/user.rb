@@ -9,4 +9,23 @@ class User < ApplicationRecord
   has_many :lists, dependent: :destroy
   has_many :movie_likes, dependent: :destroy
   has_many :movie_like_votes, dependent: :destroy
+  has_many :quizzes, dependent: :destroy
+  has_many :watch_quiz_sessions, dependent: :destroy
+
+  before_validation :normalize_username
+
+  validates :username, presence: true,
+                       uniqueness: { case_sensitive: false },
+                       format: { with: /\A[a-z0-9_-]{3,20}\z/i }
+  validates :country_code, length: { is: 2 }, allow_nil: true, format: { with: /\A[A-Z]{2}\z/, allow_blank: true }
+
+  def home_country
+    country_code.presence || "US"
+  end
+
+  private
+
+  def normalize_username
+    self.username = username.to_s.strip.downcase
+  end
 end

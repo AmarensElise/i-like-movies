@@ -2,12 +2,174 @@
 
 one:
   tmdb_id: 1
-  title: MyString
-  release_date: 2025-02-25
-  poster_path: MyString
+  title: Alpha Movie
+  release_date: 1991-02-25
+  poster_path: /alpha.jpg
+  genres: Drama
+  popularity: 90.0
+  vote_count: 900
+  revenue: 1000000
+  runtime: 120
+  genres: "Action, Thriller"
 
 two:
-  tmdb_id: 1
-  title: MyString
-  release_date: 2025-02-25
-  poster_path: MyString
+  tmdb_id: 2
+  title: Bravo Movie
+  release_date: 1994-06-10
+  poster_path: /bravo.jpg
+  genres: Action
+  popularity: 80.0
+  vote_count: 850
+  revenue: 1200000
+  runtime: 85
+  genres: "Comedy, Romance"
+
+three:
+  tmdb_id: 3
+  title: Charlie Movie
+  release_date: 1987-03-14
+  poster_path: /charlie.jpg
+  genres: Comedy
+  popularity: 75.0
+  vote_count: 820
+  revenue: 900000
+  runtime: 95
+  genres: "Horror"
+  tmdb_collection_id: 100
+  tmdb_collection_name: "Charlie Collection"
+
+four:
+  tmdb_id: 4
+  title: Delta Movie
+  release_date: 2001-09-21
+  poster_path: /delta.jpg
+  genres: Thriller
+  popularity: 65.0
+  vote_count: 780
+  revenue: 1500000
+  runtime: 110
+  genres: "Drama"
+  tmdb_collection_id: 100
+  tmdb_collection_name: "Charlie Collection"
+
+five:
+  tmdb_id: 5
+  title: Echo Movie
+  release_date: 2005-07-08
+  poster_path: /echo.jpg
+  genres: Adventure
+  popularity: 70.0
+  vote_count: 760
+  revenue: 1400000
+  runtime: 80
+  genres: "Comedy"
+
+six:
+  tmdb_id: 6
+  title: Foxtrot Movie
+  release_date: 2010-11-12
+  poster_path: /foxtrot.jpg
+  genres: Crime
+  popularity: 85.0
+  vote_count: 940
+  revenue: 2000000
+  runtime: 100
+  genres: "Drama, Thriller"
+
+seven:
+  tmdb_id: 7
+  title: Golf Movie
+  release_date: 2012-04-19
+  poster_path: /golf.jpg
+  genres: Mystery
+  popularity: 72.0
+  vote_count: 700
+  revenue: 1700000
+
+eight:
+  tmdb_id: 8
+  title: Hotel Movie
+  release_date: 2015-08-28
+  poster_path: /hotel.jpg
+  genres: Sci-Fi
+  popularity: 95.0
+  vote_count: 1200
+  revenue: 2500000
+
+nine:
+  tmdb_id: 9
+  title: India Movie
+  release_date: 2018-01-05
+  poster_path: /india.jpg
+  genres: Romance
+  popularity: 60.0
+  vote_count: 610
+  revenue: 1100000
+
+ten:
+  tmdb_id: 10
+  title: Juliet Movie
+  release_date: 2020-10-30
+  poster_path: /juliet.jpg
+  genres: Action
+  popularity: 88.0
+  vote_count: 990
+  revenue: 3000000
+
+eleven:
+  tmdb_id: 11
+  title: Kilo Movie
+  release_date: 2022-02-18
+  poster_path: /kilo.jpg
+  genres: Drama
+  popularity: 77.0
+  vote_count: 830
+  revenue: 1800000
+
+twelve:
+  tmdb_id: 12
+  title: Lima Movie
+  release_date: 1982-12-03
+  poster_path: /lima.jpg
+  genres: Fantasy
+  popularity: 55.0
+  vote_count: 540
+  revenue: 700000
+
+low_votes:
+  tmdb_id: 13
+  title: Low Votes Movie
+  release_date: 1999-01-01
+  poster_path: /low.jpg
+  genres: Horror
+  popularity: 99.0
+  vote_count: 499
+  revenue: 500000
+
+missing_release:
+  tmdb_id: 14
+  title: Missing Release Movie
+  release_date:
+  poster_path: /missing.jpg
+  popularity: 99.0
+  vote_count: 999
+  revenue: 500000
+
+documentary_movie:
+  tmdb_id: 15
+  title: Nature Chronicle
+  release_date: 2021-04-22
+  poster_path: /nature.jpg
+  popularity: 92.0
+  vote_count: 1500
+  revenue: 2200000
+  genres: Documentary, History
+
+no_genre_movie:
+  tmdb_id: 16
+  title: Genreless Feature
+  release_date: 2019-05-10
+  poster_path: /genreless.jpg
+  popularity: 84.0
+  vote_count: 1300
+  revenue: 2100000

@@ -4,7 +4,7 @@ class SearchController < ApplicationController
 
     if @query.present?
       # Search local database first
-      @movies = Movie.where("title ILIKE ?", "%#{@query}%").limit(10)
+      @movies = Movie.where("title ILIKE ?", "%#{@query}%").highest_grossing_first.limit(10)
       @shows  = Show.where("name ILIKE ?", "%#{@query}%").limit(10)
 
       # If not enough results, search TMDB API
@@ -22,7 +22,7 @@ class SearchController < ApplicationController
         @tmdb_shows = []
       end
     else
-      @movies = Movie.order(created_at: :desc).limit(10)
+      @movies = Movie.highest_grossing_first.limit(10)
       @tmdb_movies = []
       @shows = Show.order(created_at: :desc).limit(10)
       @tmdb_shows = []
@@ -73,13 +73,18 @@ class SearchController < ApplicationController
     results.map do |result|
       movie = Movie.find_by(tmdb_id: result['id'])
       
-      unless movie
+      if movie.nil?
+        movie_details = fetch_tmdb_movie(result['id'])
         movie = Movie.create(
           tmdb_id: result['id'],
           title: result['title'],
           release_date: result['release_date'],
-          poster_path: result['poster_path']
+          poster_path: result['poster_path'],
+          revenue: movie_details&.dig('revenue')
         )
+      elsif movie.revenue.nil?
+        movie_details = fetch_tmdb_movie(result['id'])
+        movie.update(revenue: movie_details&.dig('revenue')) if movie_details.present?
       end
       
       movie
@@ -109,7 +114,8 @@ class SearchController < ApplicationController
       tmdb_id: movie_data['id'],
       title: movie_data['title'],
       release_date: movie_data['release_date'],
-      poster_path: movie_data['poster_path']
+      poster_path: movie_data['poster_path'],
+      revenue: movie_data['revenue']
     )
   end
 

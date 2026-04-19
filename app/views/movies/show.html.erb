@@ -16,7 +16,13 @@
   <!-- Movie Details -->
   <div class="bg-white rounded-lg overflow-hidden mb-8">
 
-
+    <% if @movie.genres.present? %>
+      <div class="flex flex-wrap gap-2 p-4 pb-0">
+        <% @movie.genres.split(",").map(&:strip).each do |genre| %>
+          <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full"><%= genre %></span>
+        <% end %>
+      </div>
+    <% end %>
 
     <div class="md:flex">
       <!-- Movie Poster -->

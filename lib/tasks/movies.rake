@@ -173,4 +173,10 @@ namespace :movies do
 
     puts "Added #{count} new movies to the database."
   end
+
+  desc "Backfill popularity, vote_count, and revenue from TMDB"
+  task backfill_popularity: :environment do
+    result = MoviePopularityBackfiller.call
+    puts "Done! Updated: #{result[:updated]}, Failed: #{result[:failed]}, Skipped: #{result[:skipped]}"
+  end
 end

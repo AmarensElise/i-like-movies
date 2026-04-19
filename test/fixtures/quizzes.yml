@@ -1,0 +1,20 @@
+in_progress_one:
+  user: one
+  status: in_progress
+  started_at: 2026-04-01 10:00:00
+  completed_at:
+  total_score: 820
+
+completed_one:
+  user: one
+  status: completed
+  started_at: 2026-03-01 10:00:00
+  completed_at: 2026-03-01 10:15:00
+  total_score: 980
+
+completed_two:
+  user: two
+  status: completed
+  started_at: 2026-03-02 10:00:00
+  completed_at: 2026-03-02 10:15:00
+  total_score: 630

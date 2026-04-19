@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-gray-50 pb-24">
+  <div class="max-w-5xl mx-auto px-4 pt-8">
+    <div class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-gray-900">Leaderboard</h1>
+      <p class="text-gray-600 mt-2">Ranked by lowest average years off. Minimum 3 completed quizzes.</p>
+      <% if @current_user_entry.present? %>
+        <p class="mt-3 text-sm font-medium text-indigo-600">You are #<%= @current_user_entry.rank %></p>
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Rank</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Username</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Avg Years Off</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Quizzes</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Exact Guesses</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Best Score (Lowest)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <% @entries.each do |entry| %>
+              <tr class="<%= user_signed_in? && entry.id == current_user.id ? 'bg-indigo-50' : '' %>">
+                <td class="px-4 py-3 text-sm text-gray-700"><%= entry.rank %></td>
+                <td class="px-4 py-3 text-sm font-medium text-gray-900"><%= entry.username %></td>
+                <td class="px-4 py-3 text-sm text-gray-700"><%= number_with_precision(entry.avg_years_off, precision: 2) %></td>
+                <td class="px-4 py-3 text-sm text-gray-700"><%= entry.quizzes_count %></td>
+                <td class="px-4 py-3 text-sm text-gray-700"><%= entry.exact_guesses %></td>
+                <td class="px-4 py-3 text-sm text-indigo-600 font-semibold"><%= entry.best_score %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <% if @current_user_entry.present? && @current_user_entry.rank.to_i > @entries.size %>
+      <div class="mt-6 bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="px-4 py-3 border-b border-gray-200 bg-indigo-50 text-sm font-semibold text-indigo-700">Your ranking</div>
+        <table class="min-w-full">
+          <tbody>
+            <tr class="bg-indigo-50">
+              <td class="px-4 py-3 text-sm text-gray-700"><%= @current_user_entry.rank %></td>
+              <td class="px-4 py-3 text-sm font-medium text-gray-900"><%= @current_user_entry.username %></td>
+              <td class="px-4 py-3 text-sm text-gray-700"><%= number_with_precision(@current_user_entry.avg_years_off, precision: 2) %></td>
+              <td class="px-4 py-3 text-sm text-gray-700"><%= @current_user_entry.quizzes_count %></td>
+              <td class="px-4 py-3 text-sm text-gray-700"><%= @current_user_entry.exact_guesses %></td>
+              <td class="px-4 py-3 text-sm text-indigo-600 font-semibold"><%= @current_user_entry.best_score %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

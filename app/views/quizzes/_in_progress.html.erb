@@ -1,0 +1,20 @@
+<div class="min-h-screen bg-gray-50 pb-24">
+  <div class="max-w-6xl mx-auto px-4 pt-8">
+    <%# Progress bar %>
+    <% answered = quiz.quiz_questions.where.not(answered_at: nil).count %>
+    <% position = answered + 1 %>
+    <div class="mb-6">
+      <div class="flex justify-between text-sm text-gray-600 mb-1">
+        <span>Question <%= position %> of 10</span>
+        <span>Total years off: <%= quiz.quiz_questions.sum('COALESCE(points_earned, 0)') %></span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2">
+        <div class="bg-indigo-600 h-2 rounded-full transition-all" style="width: <%= answered * 10 %>%"></div>
+      </div>
+    </div>
+
+    <%= turbo_frame_tag "current_question" do %>
+      <%= render 'question_card', quiz: quiz, question: question %>
+    <% end %>
+  </div>
+</div>

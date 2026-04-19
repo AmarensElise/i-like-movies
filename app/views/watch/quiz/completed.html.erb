@@ -1,0 +1,35 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="bg-white rounded-2xl shadow-lg p-8">
+    <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Watch Quiz Result</p>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @movie.title %></h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div class="rounded-xl border border-gray-200 p-4 bg-gray-50">
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Duration</p>
+        <p class="text-gray-900 font-semibold"><%= @movie.runtime.present? ? "#{@movie.runtime} min" : "Unknown" %></p>
+      </div>
+
+      <div class="rounded-xl border border-gray-200 p-4 bg-gray-50 md:col-span-2">
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Starring</p>
+        <% if @starring.any? %>
+          <p class="text-gray-900 font-semibold"><%= @starring.join(", ") %></p>
+        <% else %>
+          <p class="text-gray-600">Cast info unavailable</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <p class="text-xs uppercase tracking-wide text-gray-500 mb-3">Where to stream</p>
+      <%= render "movies/availability", watch_providers: @watch_providers %>
+      <% if @watch_providers.blank? %>
+        <p class="text-gray-600">No streaming providers found right now.</p>
+      <% end %>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <%= link_to "Open movie page", movie_path(@movie), class: "inline-flex items-center px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors" %>
+      <%= link_to "Back to quiz start", watch_quiz_path, class: "inline-flex items-center px-4 py-2 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-colors" %>
+    </div>
+  </div>
+</div>

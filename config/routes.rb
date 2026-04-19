@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -57,5 +57,22 @@ Rails.application.routes.draw do
   # Movie Likes (things people like about movies)
   resources :movie_likes, only: [:create, :destroy]
   resources :movie_like_votes, only: [:create, :destroy]
+
+  resources :quizzes, only: [:new, :create, :show] do
+    resources :quiz_questions, only: [:update], as: :questions
+  end
+  get 'leaderboard', to: 'leaderboard#show'
+
+  namespace :watch do
+    resource :quiz, only: [:show], controller: "quiz" do
+      get :streaming
+      get :length
+      get :adventurousness
+      get :category
+      get :final
+      get :completed
+      post :complete
+    end
+  end
 
 end

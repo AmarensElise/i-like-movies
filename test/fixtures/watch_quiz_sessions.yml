@@ -1,0 +1,12 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+completed_session:
+  user: one
+  answers: '{"media_type":"movie","streaming":"any","length":"any","adventurousness":"no_bias","category":{"key":"decade_90s","label":"90s picks"}}'
+  chosen_movie: one
+  rejected_movie: two
+  completed_at: 2026-04-19 12:00:00
+
+incomplete_session:
+  user: one
+  answers: '{"media_type":"movie","streaming":"any"}'
