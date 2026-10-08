@@ -65,7 +65,10 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  # Keep cache in memory with a hard size cap. Rails' default (FileStore in
+  # tmp/cache) writes one file per key and never deletes expired ones, which
+  # exhausted the server's inodes (Rack::Attack creates a key per IP per minute).
+  config.cache_store = :memory_store, { size: 64.megabytes }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque

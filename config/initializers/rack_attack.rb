@@ -1,4 +1,8 @@
 class Rack::Attack
+  # Throttle counters live in a small in-memory store, never on disk.
+  # Note: counters are per Puma process (WEB_CONCURRENCY=1 by default).
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new(size: 16.megabytes)
+
   # Throttle all requests by IP (60 requests per minute)
   throttle("req/ip", limit: 60, period: 1.minute) do |req|
     req.ip
